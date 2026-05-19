@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#0a0a0a"/>
+  <rect x="40" y="40" width="800" height="520" rx="16" fill="#111114" stroke="rgba(0,240,255,0.2)"/>
+  <text x="60" y="80" fill="#94a3b8" font-family="system-ui" font-size="12" letter-spacing="4">NETWORK TOPOLOGY</text>
+  <line x1="200" y1="300" x2="400" y2="200" stroke="#00f0ff" stroke-width="2"/>
+  <line x1="400" y1="200" x2="600" y2="300" stroke="#ff6b35" stroke-width="2"/>
+  <circle cx="200" cy="300" r="40" fill="#111" stroke="#00f0ff"/><text x="175" y="305" fill="#fff" font-size="12" font-family="monospace">FIN-WS</text>
+  <circle cx="400" cy="200" r="40" fill="#111" stroke="#f59e0b"/><text x="385" y="205" fill="#fff" font-size="12" font-family="monospace">DC-01</text>
+  <circle cx="600" cy="300" r="40" fill="#111" stroke="#ff6b35"/><text x="580" y="305" fill="#fff" font-size="12" font-family="monospace">S3</text>
+  <rect x="680" y="480" width="140" height="60" rx="8" fill="#0a0a0a" stroke="#00f0ff" opacity="0.5"/>
+</svg>

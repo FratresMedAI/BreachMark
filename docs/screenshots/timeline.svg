@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#0a0a0a"/>
+  <rect x="40" y="480" width="1200" height="160" rx="16" fill="#111114" stroke="rgba(0,240,255,0.2)"/>
+  <text x="60" y="530" fill="#94a3b8" font-family="system-ui" font-size="12" letter-spacing="4">ATTACK TIMELINE</text>
+  <text x="60" y="580" fill="#f0f9ff" font-family="monospace" font-size="36" font-weight="700">T+240s</text>
+  <rect x="60" y="600" width="1100" height="8" rx="4" fill="#1a1a22"/>
+  <rect x="60" y="600" width="440" height="8" rx="4" fill="url(#g)"/>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#00f0ff"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs>
+  <line x1="500" y1="590" x2="500" y2="620" stroke="#00f0ff" stroke-width="3"/>
+</svg>

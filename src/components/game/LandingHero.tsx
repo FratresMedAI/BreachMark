@@ -1,66 +1,96 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Code2, Play, Shield, UserRound } from "lucide-react";
+import { Code2, Play, Shield, UserRound, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { GlassPanel } from "@/components/ui/glass-panel";
+import { ScanlineOverlay } from "@/components/effects/ScanlineOverlay";
+import { HeroGraphPreview } from "@/components/game/HeroGraphPreview";
 import { useSimulationStore } from "@/store/simulation-store";
 
 const features = [
   {
+    icon: Zap,
     title: "Credit tradeoffs",
     body: "Every control has a cost. You cannot deploy the full playbook.",
   },
   {
+    icon: Shield,
     title: "Timeline rewind",
     body: "Scrub to T+120s and test earlier defensive decisions.",
   },
   {
+    icon: Play,
     title: "Live blast radius",
     body: "Watch compromise spread across the graph in real time.",
   },
 ];
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0 },
+};
+
 export function LandingHero() {
   const setPhase = useSimulationStore((s) => s.setPhase);
 
   return (
-    <section className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-6xl flex-col justify-center px-6 py-16">
-      <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary">
-            <Shield className="h-4 w-4" />
-            Interactive blue-team simulator
-          </div>
+    <section className="relative mx-auto flex min-h-[calc(100vh-3rem)] max-w-6xl flex-col justify-center overflow-hidden px-6 py-16">
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-50">
+        <div className="absolute left-1/2 top-1/3 h-[420px] w-[620px] -translate-x-1/2 -translate-y-1/2">
+          <HeroGraphPreview />
+        </div>
+        <ScanlineOverlay />
+      </div>
 
-          <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            Breach
-            <span className="bm-text-gradient">Mark</span>
-          </h1>
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]"
+      >
+        <div>
+          <motion.div variants={item} className="mb-8">
+            <BrandLogo size="hero" glow priority className="mb-6" />
+            <h1 className="font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+              Breach
+              <span className="bm-text-gradient">Mark</span>
+            </h1>
+            <p className="mt-4 text-xl font-medium tracking-tight text-primary sm:text-2xl">
+              Simulate. Respond. Get Marked.
+            </p>
+          </motion.div>
 
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+          <motion.p
+            variants={item}
+            className="max-w-lg text-lg leading-relaxed text-muted-foreground"
+          >
             Twelve response credits. A live attack timeline. A network graph that
             reacts when you pause the breach and deploy controls.
-          </p>
+          </motion.p>
 
-          <div className="mt-10 flex flex-wrap gap-3">
+          <motion.div variants={item} className="mt-10 flex flex-wrap gap-3">
             <Button
               size="lg"
-              className="bm-glow-primary h-12 rounded-xl px-8 text-base font-semibold"
+              className="bm-glow-cyan h-12 rounded-xl px-8 text-base font-semibold"
               onClick={() => setPhase("briefing")}
             >
               <Play className="mr-2 h-5 w-5" />
-              Start simulation
+              Launch Simulator
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="h-12 rounded-xl border-border/80 bg-card/30 backdrop-blur-sm"
+              className="h-12 rounded-xl border-primary/25 bg-card/30 backdrop-blur-sm"
               asChild
             >
               <a
@@ -75,7 +105,7 @@ export function LandingHero() {
             <Button
               size="lg"
               variant="outline"
-              className="h-12 rounded-xl border-border/80 bg-card/30 backdrop-blur-sm"
+              className="h-12 rounded-xl border-primary/25 bg-card/30 backdrop-blur-sm"
               asChild
             >
               <a
@@ -87,78 +117,60 @@ export function LandingHero() {
                 LinkedIn
               </a>
             </Button>
-          </div>
+          </motion.div>
 
-          <ul className="mt-14 grid gap-4 sm:grid-cols-3">
-            {features.map((f, i) => (
+          <motion.ul
+            variants={container}
+            className="mt-14 grid gap-4 sm:grid-cols-3"
+          >
+            {features.map((f) => (
               <motion.li
                 key={f.title}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.08 }}
-                className="bm-panel rounded-xl p-4"
+                variants={item}
+                className="bm-panel group rounded-xl p-4 transition-shadow hover:bm-glow-cyan"
               >
+                <f.icon className="mb-2 h-4 w-4 text-primary" />
                 <p className="text-sm font-semibold text-foreground">{f.title}</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   {f.body}
                 </p>
               </motion.li>
             ))}
-          </ul>
-        </motion.div>
+          </motion.ul>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.15, duration: 0.55 }}
-          className="relative flex flex-col items-center gap-6"
-        >
-          <BrandLogo size="hero" glow priority className="mx-auto" />
-          <GlassPanel className="relative w-full p-5">
-            <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-3">
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                  Live preview
-                </p>
-                <p className="font-mono text-sm text-foreground">
-                  Monday Morning Phish
-                </p>
+        <motion.div variants={item} className="relative">
+          <GlassPanel glow variant="hud" className="relative p-5">
+            <ScanlineOverlay className="rounded-2xl" />
+            <div className="relative z-10">
+              <p className="bm-tactical-label text-primary/80">SOC preview</p>
+              <p className="mt-1 font-mono text-sm text-foreground">
+                Monday Morning Phish
+              </p>
+              <div className="my-4 h-36 rounded-lg border border-primary/15 bg-background/40 p-2">
+                <HeroGraphPreview />
               </div>
-              <span className="rounded-md bg-primary/15 px-2 py-1 font-mono text-xs text-primary">
-                T+240s
-              </span>
+              <div className="grid grid-cols-2 gap-2 font-mono text-xs">
+                <PreviewStat label="Credits" value="7 / 12" accent />
+                <PreviewStat label="MTTD" value="62s" />
+                <PreviewStat label="Hosts lost" value="1" warn />
+                <PreviewStat label="Exfil" value="0 rec" accent />
+              </div>
+              <Button
+                className="bm-glow-cyan mt-4 w-full rounded-xl"
+                onClick={() => setPhase("briefing")}
+              >
+                Launch Simulator
+              </Button>
             </div>
-            <div className="space-y-3 font-mono text-xs">
-              <PreviewRow label="Credits" value="7 / 12" accent />
-              <PreviewRow label="MTTD" value="62s" />
-              <PreviewRow label="Hosts lost" value="1" warn />
-              <PreviewRow label="Exfil" value="0 records" accent />
-            </div>
-            <div className="mt-4 flex h-28 items-end gap-1 rounded-lg border border-border/50 bg-background/40 p-3">
-              {[35, 48, 62, 55, 72, 40, 28, 18, 12, 8].map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-sm bg-gradient-to-t from-primary/20 to-primary/70"
-                  style={{ height: `${h}%` }}
-                />
-              ))}
-            </div>
-            <Button
-              className="mt-4 w-full rounded-xl"
-              variant="secondary"
-              onClick={() => setPhase("briefing")}
-            >
-              Enter scenario
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
           </GlassPanel>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
 
-function PreviewRow({
+function PreviewStat({
   label,
   value,
   accent,
@@ -170,16 +182,12 @@ function PreviewRow({
   warn?: boolean;
 }) {
   return (
-    <div className="flex justify-between rounded-lg bg-background/30 px-3 py-2">
+    <div className="rounded-lg border border-border/40 bg-background/30 px-3 py-2">
       <span className="text-muted-foreground">{label}</span>
       <span
-        className={
-          warn
-            ? "text-[oklch(0.8_0.14_75)]"
-            : accent
-              ? "text-primary"
-              : "text-foreground"
-        }
+        className={`float-right font-semibold ${
+          warn ? "text-[#f59e0b]" : accent ? "text-primary" : "text-foreground"
+        }`}
       >
         {value}
       </span>

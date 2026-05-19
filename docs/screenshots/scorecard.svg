@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#0a0a0a"/>
+  <rect x="390" y="80" width="500" height="560" rx="20" fill="#111114" stroke="rgba(0,240,255,0.25)"/>
+  <text x="520" y="200" fill="#94a3b8" font-family="system-ui" font-size="12" letter-spacing="6">MISSION DEBRIEF</text>
+  <text x="560" y="320" fill="#fbbf24" font-family="system-ui" font-size="120" font-weight="800">A</text>
+  <text x="480" y="380" fill="#f0f9ff" font-family="system-ui" font-size="22">Monday Morning Phish</text>
+  <rect x="430" y="480" width="420" height="48" rx="10" fill="#00f0ff"/><text x="500" y="512" fill="#0a0a0a" font-family="system-ui" font-size="16" font-weight="700">Copy result</text>
+</svg>

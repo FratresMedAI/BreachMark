@@ -24,12 +24,11 @@ export function BriefingPanel() {
       className="mx-auto w-full max-w-2xl px-4 py-8"
     >
       <GlassPanel
+        glow
         header={
           <>
-            <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-primary">
-              Scenario briefing
-            </p>
-            <h2 className="font-display mt-2 text-3xl font-bold text-foreground">
+            <p className="bm-tactical-label text-primary">Scenario briefing</p>
+            <h2 className="mt-2 font-display text-3xl font-bold text-foreground">
               {scenario.title}
             </h2>
             <p className="mt-1 text-muted-foreground">{scenario.subtitle}</p>
@@ -42,7 +41,7 @@ export function BriefingPanel() {
             {phases.map((phase, i) => (
               <li
                 key={phase}
-                className="flex gap-3 rounded-lg border border-border/40 bg-background/25 px-3 py-2"
+                className="flex gap-3 rounded-lg border border-primary/15 bg-background/25 px-3 py-2"
               >
                 <span className="font-mono text-xs font-semibold text-primary">
                   {String(i + 1).padStart(2, "0")}
@@ -51,12 +50,12 @@ export function BriefingPanel() {
               </li>
             ))}
           </ol>
-          <p className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-primary">
+          <p className="rounded-lg border border-primary/25 bg-primary/5 px-3 py-2 text-xs text-primary">
             Tip: Isolate FIN-WS-04 before T+180s or reset credentials early to
             keep DC-01 clean.
           </p>
           <Button
-            className="bm-glow-primary h-12 w-full rounded-xl text-base font-semibold"
+            className="bm-glow-cyan h-12 w-full rounded-xl text-base font-semibold"
             size="lg"
             onClick={() => setPhase("play")}
           >

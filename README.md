@@ -12,8 +12,10 @@
 [![CI](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml/badge.svg)](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-000?style=flat-square&logo=vercel&logoColor=white)](https://breachmark.vercel.app)
 [![Next.js](https://img.shields.io/badge/Next.js-16-000?style=flat-square&logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-components-000?style=flat-square)](https://ui.shadcn.com/)
 [![React Flow](https://img.shields.io/badge/React_Flow-graph-ff0072?style=flat-square)](https://reactflow.dev/)
 [![Vitest](https://img.shields.io/badge/Vitest-tested-6E9F18?style=flat-square&logo=vitest)](https://vitest.dev/)
 
@@ -36,7 +38,7 @@
 | **Problem** | Security training is often static—checklists and slides don't show *tradeoffs under pressure*. |
 | **Solution** | A playable incident where every defensive control costs credits and the timeline rewinds deterministically. |
 | **Audience** | Recruiters, hiring managers, and blue-team learners who want a **60-second** interactive proof of skill. |
-| **Status** | v1 shipped — one polished scenario (*Monday Morning Phish*), full play loop, shareable scorecard. |
+| **Status** | v1.2 — Cyber SOC dashboard UI, one polished scenario (*Monday Morning Phish*), full play loop, shareable scorecard. |
 
 > **Hook:** You get **12 response credits**. The attack keeps moving. Pause the timeline, spend credits, watch the blast radius shrink or spread.
 
@@ -58,18 +60,18 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 | Feature | What it shows |
 |---------|----------------|
-| **Credit budget** | Isolate (3cr), reset creds (2cr), block IOC (2cr), logging (2cr), revoke sessions (3cr), awareness (1cr) |
-| **Network graph** | React Flow map with compromise levels, isolation rings, click-to-target controls |
-| **Timeline scrubber** | Play/pause, jump to events, recompute outcomes from T+0 |
-| **Scorecard** | Letter grade, containment stage, copy-to-clipboard summary for LinkedIn |
-| **Fictional data only** | No scanning, no real telemetry—safe to demo anywhere |
+| 💳 **Credit budget** | Isolate (3cr), reset creds (2cr), block IOC (2cr), logging (2cr), revoke sessions (3cr), awareness (1cr) |
+| 🕸️ **Network graph** | React Flow map with glow nodes, MiniMap, compromise levels, click-to-target controls |
+| ⏱️ **Timeline scrubber** | Video-editor rail, keyboard shortcuts (`Space` / `→` / `F`), deterministic replay from T+0 |
+| 📊 **Scorecard** | Animated letter grade, confetti on **A**, [LinkedIn-ready copy](https://breachmark.vercel.app) |
+| 🔒 **Fictional data only** | No scanning, no real telemetry—safe to demo anywhere |
 
 ---
 
 ## Quick start (recruiter path)
 
 1. Open the **[live demo](https://breachmark.vercel.app)** (no install).  
-2. **Play demo** → **Start incident response**.  
+2. **Launch Simulator** → **Start incident response**.  
 3. Deploy **Isolate host** on `FIN-WS-04` before **T+180s** (or **Force password reset** on finance).  
 4. Scrub the timeline → **Finish** → **Copy result**.
 
@@ -79,11 +81,15 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 ## Screenshots
 
-<p align="center">
-  <img src="docs/demo-preview.svg" alt="Gameplay — graph, timeline, and control panel" width="92%" />
-</p>
+| Landing | Network graph |
+|:---:|:---:|
+| <img src="docs/screenshots/landing.svg" alt="BreachMark landing hero" width="100%" /> | <img src="docs/screenshots/graph.svg" alt="Network graph with compromise glow" width="100%" /> |
 
-<p align="center"><sub>Gameplay layout: network graph, attack timeline, metrics HUD, and response control shop.</sub></p>
+| Timeline | Control shop | Scorecard |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/timeline.svg" alt="Attack timeline scrubber" width="100%" /> | <img src="docs/screenshots/controls.svg" alt="Response control shop" width="100%" /> | <img src="docs/screenshots/scorecard.svg" alt="Mission debrief scorecard" width="100%" /> |
+
+<p align="center"><sub>Hero GIF coming soon — record a ~12s gameplay loop to <code>/public/demo.gif</code> and embed at the top of this section.</sub></p>
 
 ---
 

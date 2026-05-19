@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#0a0a0a"/>
+  <rect x="900" y="40" width="340" height="640" rx="16" fill="#111114" stroke="rgba(0,240,255,0.2)"/>
+  <text x="920" y="90" fill="#94a3b8" font-family="system-ui" font-size="12" letter-spacing="4">RESPONSE CONTROLS</text>
+  <text x="920" y="130" fill="#00f0ff" font-family="monospace" font-size="28">7 / 12 credits</text>
+  <rect x="920" y="160" width="300" height="56" rx="10" fill="#0f1018" stroke="rgba(0,240,255,0.15)"/>
+  <text x="960" y="195" fill="#f0f9ff" font-family="system-ui" font-size="14">Isolate host</text>
+  <rect x="1160" y="175" width="44" height="24" rx="6" fill="rgba(0,240,255,0.15)" stroke="#00f0ff"/><text x="1172" y="192" fill="#00f0ff" font-size="11" font-family="monospace">3 cr</text>
+</svg>
