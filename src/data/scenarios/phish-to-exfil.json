@@ -1,0 +1,192 @@
+{
+  "id": "monday-morning-phish",
+  "title": "Monday Morning Phish",
+  "subtitle": "Finance workstation → domain controller → object storage",
+  "description": "A finance analyst opens a payroll lure. You have 12 response credits. Pause the timeline, deploy controls, and shrink the blast radius before exfil.",
+  "startingCredits": 12,
+  "maxTime": 600,
+  "nodes": [
+    {
+      "id": "gw-edge",
+      "label": "Edge FW",
+      "role": "gateway",
+      "position": { "x": 80, "y": 200 }
+    },
+    {
+      "id": "ws-finance",
+      "label": "FIN-WS-04",
+      "role": "workstation",
+      "position": { "x": 280, "y": 80 }
+    },
+    {
+      "id": "ws-hr",
+      "label": "HR-WS-11",
+      "role": "workstation",
+      "position": { "x": 280, "y": 320 }
+    },
+    {
+      "id": "dc-01",
+      "label": "DC-01",
+      "role": "dc",
+      "position": { "x": 520, "y": 200 }
+    },
+    {
+      "id": "s3-backup",
+      "label": "S3 Backup",
+      "role": "storage",
+      "position": { "x": 760, "y": 200 }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "gw-edge", "target": "ws-finance" },
+    { "id": "e2", "source": "gw-edge", "target": "ws-hr" },
+    { "id": "e3", "source": "ws-finance", "target": "dc-01" },
+    { "id": "e4", "source": "ws-hr", "target": "dc-01" },
+    { "id": "e5", "source": "dc-01", "target": "s3-backup" }
+  ],
+  "events": [
+    {
+      "id": "ev-1",
+      "at": 30,
+      "type": "initial_access",
+      "title": "Malicious attachment opened",
+      "description": "User on FIN-WS-04 executes a macro-enabled payroll lure.",
+      "source": "ws-finance",
+      "blockedBy": [
+        { "controlId": "awareness-push" },
+        { "controlId": "isolate-host", "targetNode": "ws-finance" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "ws-finance", "level": 1 }]
+    },
+    {
+      "id": "ev-2",
+      "at": 75,
+      "type": "c2_beacon",
+      "title": "C2 beacon established",
+      "description": "Outbound HTTPS callback to actor infrastructure.",
+      "source": "ws-finance",
+      "blockedBy": [
+        { "controlId": "block-ioc" },
+        { "controlId": "isolate-host", "targetNode": "ws-finance" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "ws-finance", "level": 2 }]
+    },
+    {
+      "id": "ev-3",
+      "at": 120,
+      "type": "credential_access",
+      "title": "Browser credential dump",
+      "description": "Mimikatz-style extraction from finance browser vault.",
+      "source": "ws-finance",
+      "blockedBy": [
+        { "controlId": "reset-user-creds", "targetNode": "ws-finance" },
+        { "controlId": "isolate-host", "targetNode": "ws-finance" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "ws-finance", "level": 3 }]
+    },
+    {
+      "id": "ev-4",
+      "at": 180,
+      "type": "lateral_movement",
+      "title": "PsExec to HR workstation",
+      "description": "Stolen creds used to pivot to HR-WS-11.",
+      "source": "ws-finance",
+      "target": "ws-hr",
+      "blockedBy": [
+        { "controlId": "revoke-sessions" },
+        { "controlId": "isolate-host", "targetNode": "ws-finance" },
+        { "controlId": "reset-user-creds", "targetNode": "ws-finance" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "ws-hr", "level": 2 }]
+    },
+    {
+      "id": "ev-5",
+      "at": 240,
+      "type": "lateral_movement",
+      "title": "Lateral to domain controller",
+      "description": "Kerberoast followed by admin session to DC-01.",
+      "source": "ws-finance",
+      "target": "dc-01",
+      "blockedBy": [
+        { "controlId": "revoke-sessions" },
+        { "controlId": "isolate-host", "targetNode": "ws-finance" },
+        { "controlId": "isolate-host", "targetNode": "dc-01" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "dc-01", "level": 2 }]
+    },
+    {
+      "id": "ev-6",
+      "at": 300,
+      "type": "privilege_escalation",
+      "title": "DCSync attempt",
+      "description": "Replication API abused to dump domain hashes.",
+      "source": "dc-01",
+      "target": "dc-01",
+      "blockedBy": [
+        { "controlId": "isolate-host", "targetNode": "dc-01" },
+        { "controlId": "revoke-sessions" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "dc-01", "level": 3 }]
+    },
+    {
+      "id": "ev-7",
+      "at": 360,
+      "type": "collection",
+      "title": "Backup catalog staged",
+      "description": "Sensitive finance archives aggregated on DC-01.",
+      "source": "dc-01",
+      "blockedBy": [
+        { "controlId": "isolate-host", "targetNode": "dc-01" },
+        { "controlId": "enhanced-logging" }
+      ],
+      "effects": [{ "type": "lateral_mark", "nodeId": "dc-01", "level": 3 }]
+    },
+    {
+      "id": "ev-8",
+      "at": 420,
+      "type": "exfiltration",
+      "title": "S3 sync exfiltration",
+      "description": "12,400 customer records uploaded to actor-controlled bucket.",
+      "source": "dc-01",
+      "target": "s3-backup",
+      "blockedBy": [
+        { "controlId": "block-ioc" },
+        { "controlId": "isolate-host", "targetNode": "dc-01" }
+      ],
+      "effects": [
+        { "type": "compromise", "nodeId": "s3-backup", "level": 2 },
+        { "type": "exfil", "nodeId": "s3-backup", "records": 12400 }
+      ]
+    },
+    {
+      "id": "ev-9",
+      "at": 480,
+      "type": "impact",
+      "title": "Ransomware prep",
+      "description": "Deployment scripts staged across remaining workstations.",
+      "source": "dc-01",
+      "blockedBy": [
+        { "controlId": "isolate-host", "targetNode": "dc-01" },
+        { "controlId": "block-ioc" }
+      ],
+      "effects": [
+        { "type": "compromise", "nodeId": "ws-finance", "level": 3 },
+        { "type": "compromise", "nodeId": "ws-hr", "level": 3 }
+      ]
+    },
+    {
+      "id": "ev-10",
+      "at": 540,
+      "type": "exfiltration",
+      "title": "Secondary exfil wave",
+      "description": "HR payroll database — additional 8,200 records.",
+      "source": "s3-backup",
+      "target": "s3-backup",
+      "blockedBy": [
+        { "controlId": "block-ioc" },
+        { "controlId": "isolate-host", "targetNode": "dc-01" }
+      ],
+      "effects": [{ "type": "exfil", "nodeId": "s3-backup", "records": 8200 }]
+    }
+  ]
+}
