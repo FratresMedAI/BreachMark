@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { PanelRight } from "lucide-react";
 import { toast } from "sonner";
 import { AttackTimeline } from "@/components/game/AttackTimeline";
@@ -29,7 +28,6 @@ function SidePanel() {
 }
 
 export function GamePlay() {
-  const scenario = useSimulationStore((s) => s.scenario);
   const isPlaying = useSimulationStore((s) => s.isPlaying);
   const tick = useSimulationStore((s) => s.tick);
   const lastToast = useSimulationStore((s) => s.lastToast);
@@ -53,31 +51,6 @@ export function GamePlay() {
 
   return (
     <div className="mx-auto flex w-full max-w-[1680px] flex-col gap-5 px-3 pb-8 pt-3 sm:px-5">
-      <motion.div
-        layout
-        className="bm-panel relative overflow-hidden rounded-xl px-4 py-3"
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      >
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(0,240,255,0.08),transparent_45%,rgba(192,38,211,0.07))]" />
-        <div className="relative flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p className="bm-tactical-label text-primary/90">Active scenario</p>
-            <p className="font-sans text-xl font-bold tracking-tight text-foreground">
-              {scenario.title}
-            </p>
-            <p className="font-mono text-xs text-muted-foreground">{scenario.subtitle}</p>
-          </div>
-          <div className="hidden items-center gap-2 sm:flex">
-            <span className="rounded border border-primary/35 bg-primary/10 px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-primary">
-              Live
-            </span>
-            <span className="rounded border border-accent/30 bg-accent/10 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
-              60fps target
-            </span>
-          </div>
-        </div>
-      </motion.div>
-
       <div className="grid items-start gap-5 2xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="flex min-w-0 flex-col gap-5">
           <div className="h-[440px] min-h-[440px] sm:h-[500px] lg:h-[560px] 2xl:h-[600px]">
