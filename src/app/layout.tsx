@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://breach-budget.vercel.app",
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://breachmark.vercel.app",
   ),
   title: "BreachMark — Interactive Defensive Simulator",
   description:

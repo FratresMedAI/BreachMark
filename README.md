@@ -8,7 +8,7 @@
 
 <br />
 
-[![Live demo](https://img.shields.io/badge/Live_Demo-Play-0891b2?style=for-the-badge)](https://breach-budget.vercel.app)
+[![Live demo](https://img.shields.io/badge/Live_Demo-Play-0891b2?style=for-the-badge)](https://breachmark.vercel.app)
 [![CI](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml/badge.svg)](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 
@@ -23,7 +23,7 @@
 
 <br />
 
-[Live demo](https://breach-budget.vercel.app) · [Scenario design](SCENARIO_DESIGN.md) · [Report issue](https://github.com/FratresMedAI/BreachMark/issues)
+[Live demo](https://breachmark.vercel.app) · [Scenario design](SCENARIO_DESIGN.md) · [Report issue](https://github.com/FratresMedAI/BreachMark/issues)
 
 </div>
 
@@ -68,7 +68,7 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 ## Quick start (recruiter path)
 
-1. Open the **[live demo](https://breach-budget.vercel.app)** (no install).  
+1. Open the **[live demo](https://breachmark.vercel.app)** (no install).  
 2. **Play demo** → **Start incident response**.  
 3. Deploy **Isolate host** on `FIN-WS-04` before **T+180s** (or **Force password reset** on finance).  
 4. Scrub the timeline → **Finish** → **Copy result**.
