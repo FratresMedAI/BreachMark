@@ -5,7 +5,6 @@ import {
   Controls,
   Handle,
   MarkerType,
-  MiniMap,
   Position,
   ReactFlow,
   ReactFlowProvider,
@@ -311,14 +310,6 @@ function NetworkGraphInner() {
         >
           <Background color="#00f0ff" gap={28} size={1} />
           <Controls showInteractive={false} position="bottom-right" />
-          <MiniMap
-            nodeColor={() => "rgba(0, 240, 255, 0.5)"}
-            maskColor="rgba(0, 240, 255, 0.08)"
-            className="!bottom-3 !right-3 !left-auto"
-            style={{ width: 128, height: 92 }}
-            pannable
-            zoomable
-          />
         </ReactFlow>
       </div>
     </GlassPanel>
