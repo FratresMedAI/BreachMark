@@ -13,9 +13,9 @@ describe("replayToTime", () => {
     expect(result.metrics.hostsCompromised).toBeGreaterThan(1);
   });
 
-  it("contains early phish with awareness push", () => {
+  it("contains the first gateway attack with edge isolation", () => {
     const controls: AppliedControl[] = [
-      { controlId: "awareness-push", appliedAt: 10 },
+      { controlId: "isolate-host", appliedAt: 10, targetNode: "gw-edge" },
     ];
     const result = replayToTime(scenario, controls, 600);
     const first = result.resolvedEvents[0];
@@ -60,11 +60,11 @@ describe("replayToTime", () => {
 
   it("tracks credits spent", () => {
     const controls: AppliedControl[] = [
-      { controlId: "awareness-push", appliedAt: 5 },
+      { controlId: "enhanced-logging", appliedAt: 5 },
       { controlId: "block-ioc", appliedAt: 50 },
     ];
     const result = replayToTime(scenario, controls, 600);
-    expect(result.creditsSpent).toBe(5);
-    expect(result.creditsRemaining).toBe(7);
+    expect(result.creditsSpent).toBe(7);
+    expect(result.creditsRemaining).toBe(5);
   });
 });

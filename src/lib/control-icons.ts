@@ -1,7 +1,6 @@
 import {
   KeyRound,
   LogOut,
-  Megaphone,
   ScanEye,
   ShieldBan,
   Unplug,
@@ -14,5 +13,4 @@ export const CONTROL_ICONS: Record<string, LucideIcon> = {
   "block-ioc": ShieldBan,
   "enhanced-logging": ScanEye,
   "revoke-sessions": LogOut,
-  "awareness-push": Megaphone,
 };

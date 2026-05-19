@@ -2,7 +2,7 @@
   "id": "monday-morning-phish",
   "title": "Monday Morning Phish",
   "subtitle": "Dual gateway phish → domain controller → object storage",
-  "description": "A finance analyst opens a payroll lure while the attacker probes two ingress paths. You have 12 response credits. Pause the timeline, deploy controls, and shrink the blast radius before exfil.",
+  "description": "A finance analyst opens a payroll lure while a stolen VPN token lands through a second gateway. You have 12 response credits, but broad controls are expensive. Pause the timeline, contain both entry paths, and stop the later domain and exfil stages.",
   "startingCredits": 12,
   "maxTime": 600,
   "nodes": [
@@ -76,7 +76,6 @@
       "source": "gw-edge",
       "target": "ws-finance",
       "blockedBy": [
-        { "controlId": "awareness-push" },
         { "controlId": "isolate-host", "targetNode": "gw-edge" },
         { "controlId": "isolate-host", "targetNode": "ws-finance" }
       ],
@@ -84,7 +83,7 @@
     },
     {
       "id": "ev-2",
-      "at": 60,
+      "at": 90,
       "type": "c2_beacon",
       "title": "C2 beacon established",
       "description": "Outbound HTTPS callback to actor infrastructure.",
@@ -97,7 +96,7 @@
     },
     {
       "id": "ev-3",
-      "at": 95,
+      "at": 140,
       "type": "credential_access",
       "title": "Browser credential dump",
       "description": "Mimikatz-style extraction from finance browser vault.",
@@ -110,7 +109,7 @@
     },
     {
       "id": "ev-4",
-      "at": 135,
+      "at": 210,
       "type": "lateral_movement",
       "title": "PsExec to HR workstation",
       "description": "Stolen creds used to pivot to HR-WS-11.",
@@ -140,7 +139,7 @@
     },
     {
       "id": "ev-6",
-      "at": 205,
+      "at": 285,
       "type": "lateral_movement",
       "title": "Lateral to domain controller",
       "description": "Kerberoast followed by admin session to DC-01 from the operations subnet.",
@@ -155,7 +154,7 @@
     },
     {
       "id": "ev-7",
-      "at": 250,
+      "at": 360,
       "type": "privilege_escalation",
       "title": "DCSync attempt",
       "description": "Replication API abused to dump domain hashes.",
@@ -169,7 +168,7 @@
     },
     {
       "id": "ev-8",
-      "at": 300,
+      "at": 430,
       "type": "collection",
       "title": "Backup catalog staged",
       "description": "Sensitive finance archives aggregated on DC-01.",
@@ -182,7 +181,7 @@
     },
     {
       "id": "ev-9",
-      "at": 350,
+      "at": 485,
       "type": "lateral_movement",
       "title": "Engineering workstation seeded",
       "description": "Deployment share access gives the attacker a staging host.",
@@ -197,7 +196,7 @@
     },
     {
       "id": "ev-10",
-      "at": 395,
+      "at": 530,
       "type": "exfiltration",
       "title": "S3 sync exfiltration",
       "description": "18,500 customer records uploaded to actor-controlled bucket.",
@@ -214,7 +213,7 @@
     },
     {
       "id": "ev-11",
-      "at": 435,
+      "at": 565,
       "type": "impact",
       "title": "Ransomware prep",
       "description": "Deployment scripts staged across remaining workstations.",
@@ -232,7 +231,7 @@
     },
     {
       "id": "ev-12",
-      "at": 465,
+      "at": 590,
       "type": "exfiltration",
       "title": "Secondary exfil wave",
       "description": "HR payroll database — additional 11,300 records.",

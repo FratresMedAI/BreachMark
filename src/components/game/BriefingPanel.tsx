@@ -7,11 +7,11 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
 
 const phases = [
-  "Malicious attachment on finance workstation",
-  "C2 beacon and credential theft",
-  "VPN token replay and workstation spread",
-  "Lateral movement toward DC-01",
-  "DCSync and object-storage exfiltration",
+  "T+30 edge-gateway phish lands on finance",
+  "T+45 VPN token replay opens a second path",
+  "Credential theft and lateral movement",
+  "Domain controller escalation",
+  "Object-storage exfiltration near the end",
 ];
 
 export function BriefingPanel() {
@@ -53,8 +53,8 @@ export function BriefingPanel() {
             ))}
           </ol>
           <p className="rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-xs text-primary">
-            Tip: Isolate FIN-WS-04 before T+135s or reset credentials early to
-            keep DC-01 clean.
+            Tip: One gateway containment is not enough. The second path still
+            fires unless you spend credits on the VPN/session side too.
           </p>
           <Button
             className="bm-glow-cyan h-12 w-full rounded-xl text-base font-semibold"

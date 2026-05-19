@@ -87,8 +87,8 @@ export function LandingHero() {
             variants={item}
             className="max-w-xl text-lg leading-relaxed text-muted-foreground"
           >
-            Twelve response credits. A live attack timeline. A network graph that
-            reacts when you pause the breach and deploy controls.
+            Twelve response credits. Two gateway attacks. A 600-second timeline
+            that keeps moving after the first containment.
           </motion.p>
 
           <motion.div variants={item} className="mt-10 flex flex-wrap gap-3">
@@ -170,9 +170,9 @@ export function LandingHero() {
                 <HeroGraphPreview />
               </div>
               <div className="grid grid-cols-2 gap-2 font-mono text-xs">
-                <PreviewStat label="Credits" value="7 / 12" accent />
-                <PreviewStat label="MTTD" value="62s" />
-                <PreviewStat label="Hosts lost" value="1" warn />
+                <PreviewStat label="Credits" value="5 / 12" accent />
+                <PreviewStat label="MTTD" value="90s" />
+                <PreviewStat label="Hosts lost" value="2" warn />
                 <PreviewStat label="Exfil" value="0 rec" accent />
               </div>
               <Button
