@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { LandingHero } from "@/components/game/LandingHero";
 import { useSimulationStore } from "@/store/simulation-store";
 
@@ -23,15 +23,34 @@ const phaseMotion = {
   transition: { type: "spring", stiffness: 300, damping: 30 },
 } as const;
 
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export function GameShell() {
   const phase = useSimulationStore((s) => s.phase);
   const setPhase = useSimulationStore((s) => s.setPhase);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 
   useEffect(() => {
     if (window.location.search.includes("phase=play")) {
       setPhase("play");
     }
   }, [setPhase]);
+
+  if (!mounted) {
+    return (
+      <div
+        className="min-h-[calc(100vh-3rem)]"
+        suppressHydrationWarning
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <AnimatePresence mode="wait">

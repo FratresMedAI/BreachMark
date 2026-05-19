@@ -9,6 +9,7 @@ import { useSimulationStore } from "@/store/simulation-store";
 const phases = [
   "Malicious attachment on finance workstation",
   "C2 beacon and credential theft",
+  "VPN token replay and workstation spread",
   "Lateral movement toward DC-01",
   "DCSync and object-storage exfiltration",
 ];

@@ -8,7 +8,7 @@ const scenario = scenarioJson as Scenario;
 describe("replayToTime", () => {
   it("runs full breach with no controls", () => {
     const result = replayToTime(scenario, [], 600);
-    expect(result.metrics.eventsFired).toBe(10);
+    expect(result.metrics.eventsFired).toBe(12);
     expect(result.metrics.recordsExfiltrated).toBeGreaterThan(0);
     expect(result.metrics.hostsCompromised).toBeGreaterThan(1);
   });
@@ -51,6 +51,6 @@ describe("replayToTime", () => {
     ];
     const result = replayToTime(scenario, controls, 600);
     expect(result.creditsSpent).toBe(5);
-    expect(result.creditsRemaining).toBe(4);
+    expect(result.creditsRemaining).toBe(7);
   });
 });

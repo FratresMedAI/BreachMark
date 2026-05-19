@@ -1,16 +1,22 @@
 {
   "id": "monday-morning-phish",
   "title": "Monday Morning Phish",
-  "subtitle": "Finance workstation → domain controller → object storage",
-  "description": "A finance analyst opens a payroll lure. You have 9 response credits. Pause the timeline, deploy controls, and shrink the blast radius before exfil.",
-  "startingCredits": 9,
+  "subtitle": "Dual gateway phish → domain controller → object storage",
+  "description": "A finance analyst opens a payroll lure while the attacker probes two ingress paths. You have 12 response credits. Pause the timeline, deploy controls, and shrink the blast radius before exfil.",
+  "startingCredits": 12,
   "maxTime": 480,
   "nodes": [
     {
       "id": "gw-edge",
       "label": "Edge FW",
       "role": "gateway",
-      "position": { "x": 80, "y": 200 }
+      "position": { "x": 70, "y": 150 }
+    },
+    {
+      "id": "gw-vpn",
+      "label": "VPN GW",
+      "role": "gateway",
+      "position": { "x": 70, "y": 310 }
     },
     {
       "id": "ws-finance",
@@ -19,10 +25,22 @@
       "position": { "x": 280, "y": 80 }
     },
     {
+      "id": "ws-ops",
+      "label": "OPS-WS-07",
+      "role": "workstation",
+      "position": { "x": 280, "y": 210 }
+    },
+    {
       "id": "ws-hr",
       "label": "HR-WS-11",
       "role": "workstation",
-      "position": { "x": 280, "y": 320 }
+      "position": { "x": 280, "y": 340 }
+    },
+    {
+      "id": "ws-eng",
+      "label": "ENG-WS-19",
+      "role": "workstation",
+      "position": { "x": 520, "y": 340 }
     },
     {
       "id": "dc-01",
@@ -39,10 +57,14 @@
   ],
   "edges": [
     { "id": "e1", "source": "gw-edge", "target": "ws-finance" },
-    { "id": "e2", "source": "gw-edge", "target": "ws-hr" },
-    { "id": "e3", "source": "ws-finance", "target": "dc-01" },
-    { "id": "e4", "source": "ws-hr", "target": "dc-01" },
-    { "id": "e5", "source": "dc-01", "target": "s3-backup" }
+    { "id": "e2", "source": "gw-edge", "target": "ws-ops" },
+    { "id": "e3", "source": "gw-vpn", "target": "ws-hr" },
+    { "id": "e4", "source": "gw-vpn", "target": "ws-eng" },
+    { "id": "e5", "source": "ws-finance", "target": "dc-01" },
+    { "id": "e6", "source": "ws-ops", "target": "dc-01" },
+    { "id": "e7", "source": "ws-hr", "target": "dc-01" },
+    { "id": "e8", "source": "ws-eng", "target": "dc-01" },
+    { "id": "e9", "source": "dc-01", "target": "s3-backup" }
   ],
   "events": [
     {
@@ -101,7 +123,22 @@
     },
     {
       "id": "ev-5",
-      "at": 180,
+      "at": 165,
+      "type": "lateral_movement",
+      "title": "VPN token replay to operations",
+      "description": "Stolen session material opens a second path into OPS-WS-07.",
+      "source": "ws-finance",
+      "target": "ws-ops",
+      "blockedBy": [
+        { "controlId": "revoke-sessions" },
+        { "controlId": "block-ioc" },
+        { "controlId": "isolate-host", "targetNode": "gw-vpn" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "ws-ops", "level": 2 }]
+    },
+    {
+      "id": "ev-6",
+      "at": 205,
       "type": "lateral_movement",
       "title": "Lateral to domain controller",
       "description": "Kerberoast followed by admin session to DC-01.",
@@ -115,8 +152,8 @@
       "effects": [{ "type": "compromise", "nodeId": "dc-01", "level": 2 }]
     },
     {
-      "id": "ev-6",
-      "at": 230,
+      "id": "ev-7",
+      "at": 250,
       "type": "privilege_escalation",
       "title": "DCSync attempt",
       "description": "Replication API abused to dump domain hashes.",
@@ -129,8 +166,8 @@
       "effects": [{ "type": "compromise", "nodeId": "dc-01", "level": 3 }]
     },
     {
-      "id": "ev-7",
-      "at": 280,
+      "id": "ev-8",
+      "at": 300,
       "type": "collection",
       "title": "Backup catalog staged",
       "description": "Sensitive finance archives aggregated on DC-01.",
@@ -142,8 +179,23 @@
       "effects": [{ "type": "lateral_mark", "nodeId": "dc-01", "level": 3 }]
     },
     {
-      "id": "ev-8",
-      "at": 330,
+      "id": "ev-9",
+      "at": 350,
+      "type": "lateral_movement",
+      "title": "Engineering workstation seeded",
+      "description": "Deployment share access gives the attacker a staging host.",
+      "source": "dc-01",
+      "target": "ws-eng",
+      "blockedBy": [
+        { "controlId": "isolate-host", "targetNode": "dc-01" },
+        { "controlId": "revoke-sessions" },
+        { "controlId": "enhanced-logging" }
+      ],
+      "effects": [{ "type": "compromise", "nodeId": "ws-eng", "level": 2 }]
+    },
+    {
+      "id": "ev-10",
+      "at": 395,
       "type": "exfiltration",
       "title": "S3 sync exfiltration",
       "description": "18,500 customer records uploaded to actor-controlled bucket.",
@@ -159,8 +211,8 @@
       ]
     },
     {
-      "id": "ev-9",
-      "at": 390,
+      "id": "ev-11",
+      "at": 435,
       "type": "impact",
       "title": "Ransomware prep",
       "description": "Deployment scripts staged across remaining workstations.",
@@ -171,12 +223,14 @@
       ],
       "effects": [
         { "type": "compromise", "nodeId": "ws-finance", "level": 3 },
-        { "type": "compromise", "nodeId": "ws-hr", "level": 3 }
+        { "type": "compromise", "nodeId": "ws-hr", "level": 3 },
+        { "type": "compromise", "nodeId": "ws-ops", "level": 3 },
+        { "type": "compromise", "nodeId": "ws-eng", "level": 3 }
       ]
     },
     {
-      "id": "ev-10",
-      "at": 450,
+      "id": "ev-12",
+      "at": 465,
       "type": "exfiltration",
       "title": "Secondary exfil wave",
       "description": "HR payroll database — additional 11,300 records.",

@@ -26,6 +26,7 @@ import type { NodeRole, SimNodeState } from "@/lib/simulation/types";
 import { useSimulationStore } from "@/store/simulation-store";
 import { CONTROL_MAP } from "@/lib/simulation/controls";
 import { GlassPanel } from "@/components/ui/glass-panel";
+import { Progress } from "@/components/ui/progress";
 import {
   Tooltip,
   TooltipContent,
@@ -179,6 +180,8 @@ function NetworkGraphInner() {
   const selectedControlCost = selectedControlId
     ? CONTROL_MAP[selectedControlId]?.cost
     : undefined;
+  const metrics = replay.metrics;
+  const exfilPct = Math.min(100, (metrics.recordsExfiltrated / 29800) * 100);
 
   const nodes: Node[] = useMemo(
     () =>
@@ -252,7 +255,7 @@ function NetworkGraphInner() {
       glow
       className="relative flex h-full min-h-0 flex-col"
       header={
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="bm-tactical-label">Network topology</p>
             <p className="text-sm text-foreground/90">
@@ -261,19 +264,39 @@ function NetworkGraphInner() {
                 : "Live compromise state"}
             </p>
           </div>
-          <div className="flex gap-3 text-[10px] uppercase tracking-wider text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#00f0ff]" />
-              Clean
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-[#22ff88] shadow-[0_0_8px_#22ff88]" />
-              Safe
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-destructive shadow-[0_0_8px_#ff3b5c]" />
-              Hot
-            </span>
+          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+            <InlineHudStat
+              label="MTTD"
+              value={metrics.mttd !== null ? `${metrics.mttd}s` : "Never"}
+              tone="text-primary"
+            />
+            <InlineHudStat
+              label="Hosts"
+              value={String(metrics.hostsCompromised)}
+              tone="text-[#ffb020]"
+            />
+            <InlineHudStat
+              label="Contained"
+              value={`${metrics.eventsContained}/${scenario.events.length}`}
+              tone="text-accent"
+            />
+            <div className="hidden min-w-28 rounded-lg border border-destructive/15 bg-background/35 px-2 py-1.5 xl:block">
+              <div className="mb-1 flex justify-between font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+                <span>Exfil</span>
+                <span className="text-destructive">
+                  {metrics.recordsExfiltrated.toLocaleString()}
+                </span>
+              </div>
+              <Progress
+                value={exfilPct}
+                className="h-1 bg-muted/40 [&_[data-slot=progress-indicator]]:bg-destructive"
+              />
+            </div>
+            <div className="flex gap-2 pl-1 text-[9px] uppercase tracking-wider text-muted-foreground">
+              <LegendDot label="Clean" className="bg-primary shadow-[0_0_8px_#00f0ff]" />
+              <LegendDot label="Safe" className="bg-[#22ff88] shadow-[0_0_8px_#22ff88]" />
+              <LegendDot label="Hot" className="bg-destructive shadow-[0_0_8px_#ff3b5c]" />
+            </div>
           </div>
         </div>
       }
@@ -298,7 +321,7 @@ function NetworkGraphInner() {
           nodeTypes={nodeTypes}
           onNodeClick={onNodeClick}
           fitView
-          fitViewOptions={{ padding: 0.24 }}
+          fitViewOptions={{ padding: 0.16 }}
           minZoom={0.25}
           maxZoom={1.1}
           proOptions={{ hideAttribution: true }}
@@ -319,6 +342,36 @@ function NetworkGraphInner() {
         </ReactFlow>
       </div>
     </GlassPanel>
+  );
+}
+
+function InlineHudStat({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string;
+  tone: string;
+}) {
+  return (
+    <div className="min-w-20 rounded-lg border border-primary/15 bg-background/35 px-2 py-1.5">
+      <p className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+        {label}
+      </p>
+      <p className={cn("font-mono text-sm font-semibold leading-tight", tone)}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function LegendDot({ label, className }: { label: string; className: string }) {
+  return (
+    <span className="flex items-center gap-1">
+      <span className={cn("h-2 w-2 rounded-full", className)} />
+      {label}
+    </span>
   );
 }
 

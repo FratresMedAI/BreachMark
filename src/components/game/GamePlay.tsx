@@ -5,7 +5,6 @@ import { PanelRight } from "lucide-react";
 import { toast } from "sonner";
 import { AttackTimeline } from "@/components/game/AttackTimeline";
 import { ControlShop } from "@/components/game/ControlShop";
-import { MetricsHUD } from "@/components/game/MetricsHUD";
 import { NetworkGraph } from "@/components/game/NetworkGraph";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +20,6 @@ import { useSimulationStore } from "@/store/simulation-store";
 function SidePanel() {
   return (
     <>
-      <MetricsHUD />
       <ControlShop />
     </>
   );
