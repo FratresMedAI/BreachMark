@@ -1,38 +1,137 @@
+<div align="center">
+
 # Breach Budget
 
-**Interactive blue-team incident simulator** — spend limited response credits, scrub the attack timeline, and watch the blast radius change on a live network graph.
+### Interactive blue-team incident simulator
 
-[![Live demo](https://img.shields.io/badge/demo-play-brightgreen?style=for-the-badge)](https://breach-budget.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square)](https://nextjs.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+**Spend limited response credits. Scrub the attack timeline. Watch the blast radius change on a live network graph.**
 
-> You get **12 response credits**. The attack keeps moving. Pause the timeline, spend credits, watch the blast radius shrink or spread.
+<br />
 
-![Breach Budget demo](docs/demo-preview.svg)
+[![Live demo](https://img.shields.io/badge/Live_Demo-Play-0891b2?style=for-the-badge)](https://breach-budget.vercel.app)
+[![CI](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml/badge.svg)](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 
-## What makes this different
+[![Next.js](https://img.shields.io/badge/Next.js-16-000?style=flat-square&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React Flow](https://img.shields.io/badge/React_Flow-graph-ff0072?style=flat-square)](https://reactflow.dev/)
+[![Vitest](https://img.shields.io/badge/Vitest-tested-6E9F18?style=flat-square&logo=vitest)](https://vitest.dev/)
 
-- **Tradeoffs, not checklists** — every control costs credits; you cannot deploy everything.
-- **Timeline scrub** — rewind to T+120s and ask *“what if I isolated finance 30 seconds earlier?”*
-- **Deterministic engine** — pure TypeScript simulation, separated from the React UI (good for interviews).
+<br />
 
-## 30-second recruiter path
+<img src="docs/banner.svg" alt="Breach Budget — network graph, timeline, and response controls" width="100%" />
 
-1. Open the [live demo](https://breach-budget.vercel.app).
-2. Click **Play demo** → **Start incident response**.
-3. Deploy **Isolate host** on `FIN-WS-04` before T+180s (or **Force password reset**).
-4. Scrub the timeline and hit **Finish** → copy your scorecard for LinkedIn.
+<br />
+
+[Live demo](https://breach-budget.vercel.app) · [Scenario design](SCENARIO_DESIGN.md) · [Report issue](https://github.com/FratresMedAI/BreachMark/issues)
+
+</div>
+
+---
+
+## At a glance
+
+| | |
+|---|---|
+| **Problem** | Security training is often static—checklists and slides don't show *tradeoffs under pressure*. |
+| **Solution** | A playable incident where every defensive control costs credits and the timeline rewinds deterministically. |
+| **Audience** | Recruiters, hiring managers, and blue-team learners who want a **60-second** interactive proof of skill. |
+| **Status** | v1 shipped — one polished scenario (*Monday Morning Phish*), full play loop, shareable scorecard. |
+
+> **Hook:** You get **12 response credits**. The attack keeps moving. Pause the timeline, spend credits, watch the blast radius shrink or spread.
+
+---
+
+## Why this exists (portfolio narrative)
+
+I built **Breach Budget** to demonstrate skills that don't show up in a resume bullet list:
+
+- **Defensive thinking** — prioritizing controls when you cannot afford them all  
+- **Systems design** — simulation engine decoupled from UI for testable, deterministic replay  
+- **Product sense** — recruiter can go from README → live demo → scorecard in under two minutes  
+
+This repo is meant to be **pinned on GitHub** and linked from a resume or LinkedIn as a show-don't-tell project.
+
+---
+
+## Features
+
+| Feature | What it shows |
+|---------|----------------|
+| **Credit budget** | Isolate (3cr), reset creds (2cr), block IOC (2cr), logging (2cr), revoke sessions (3cr), awareness (1cr) |
+| **Network graph** | React Flow map with compromise levels, isolation rings, click-to-target controls |
+| **Timeline scrubber** | Play/pause, jump to events, recompute outcomes from T+0 |
+| **Scorecard** | Letter grade, containment stage, copy-to-clipboard summary for LinkedIn |
+| **Fictional data only** | No scanning, no real telemetry—safe to demo anywhere |
+
+---
+
+## Quick start (recruiter path)
+
+1. Open the **[live demo](https://breach-budget.vercel.app)** (no install).  
+2. **Play demo** → **Start incident response**.  
+3. Deploy **Isolate host** on `FIN-WS-04` before **T+180s** (or **Force password reset** on finance).  
+4. Scrub the timeline → **Finish** → **Copy result**.
+
+**Win condition to try:** DC stays clean and exfil stays at **0** when finance is isolated early.
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/demo-preview.svg" alt="Gameplay — graph, timeline, and control panel" width="92%" />
+</p>
+
+<p align="center"><sub>Gameplay layout: network graph, attack timeline, metrics HUD, and response control shop.</sub></p>
+
+---
 
 ## Tech stack
 
-| Layer | Tech |
-|-------|------|
-| Framework | Next.js 16 (App Router) |
-| UI | shadcn/ui, Tailwind CSS v4 |
-| Graph | React Flow (`@xyflow/react`) |
-| Motion | Framer Motion |
-| State | Zustand |
-| Tests | Vitest |
+| Layer | Technology | Role |
+|-------|------------|------|
+| Framework | Next.js 16 (App Router) | SSR-ready shell, Vercel deploy |
+| Language | TypeScript (strict) | End-to-end typing |
+| UI | shadcn/ui + Tailwind CSS v4 | Accessible components, dark “SOC radar” theme |
+| Graph | `@xyflow/react` | Interactive compromise topology |
+| Motion | Framer Motion | Landing and scorecard transitions |
+| State | Zustand | Game phase, controls, replay sync |
+| Tests | Vitest | Simulation engine unit tests |
+| CI | GitHub Actions | `test` · `lint` · `build` on every push |
+
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph ui [React_UI]
+    Graph[NetworkGraph]
+    Timeline[AttackTimeline]
+    Shop[ControlShop]
+  end
+  subgraph core [Simulation_Core]
+    JSON[Scenario_JSON]
+    Engine[replayToTime]
+  end
+  JSON --> Engine
+  Engine --> Graph
+  Engine --> Timeline
+  Shop --> Engine
+```
+
+```
+src/
+├── lib/simulation/     # Pure TS engine (no React) — Vitest covered
+├── data/scenarios/     # Attack timelines + MITRE-style events
+├── components/game/    # Graph, timeline, controls, scorecard
+└── store/              # Zustand game state
+```
+
+Design details: [SCENARIO_DESIGN.md](SCENARIO_DESIGN.md)
+
+---
 
 ## Local development
 
@@ -43,37 +142,38 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server at http://localhost:3000 |
+| `npm test` | Run simulation engine tests |
+| `npm run lint` | ESLint |
+| `npm run build` | Production build |
 
-```bash
-npm test        # simulation engine unit tests
-npm run build   # production build
-```
-
-## Architecture
-
-```
-src/lib/simulation/   ← deterministic replay engine (no React)
-src/data/scenarios/   ← JSON attack timelines
-src/components/game/  ← graph, timeline, controls, scorecard
-src/store/            ← Zustand game state
-```
-
-See [SCENARIO_DESIGN.md](SCENARIO_DESIGN.md) for MITRE mapping and control economics.
+---
 
 ## What I learned
 
-- Modeling **reachability** (events cannot fire from uncompromised hosts) matters as much as listing defensive controls.
-- **Deterministic replay** from T+0 makes timeline scrub trustworthy.
-- Recruiters engage when outcomes change in **under 60 seconds** without reading docs.
+- **Reachability matters** — events cannot fire from hosts that were never compromised; without that rule, defensive actions feel meaningless.  
+- **Deterministic replay** — scrubbing time only works if state is recomputed from T+0 with the same inputs.  
+- **Recruiters need speed** — interactivity beats documentation when the goal is a first impression.
 
-## Deploy
+---
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/FratresMedAI/BreachMark)
+## Deploy your own
 
-## Topics
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/FratresMedAI/BreachMark&project-name=breach-budget&repository-name=breach-budget)
 
-`blue-team` `cybersecurity` `incident-response` `nextjs` `security-awareness` `interactive`
+Set `NEXT_PUBLIC_SITE_URL` to your deployment URL for correct Open Graph links.
+
+---
+
+## Author
+
+Built and maintained by **[FratresMedAI](https://github.com/FratresMedAI)**.
+
+If this project is useful for your portfolio or team, consider **starring the repo** — it helps visibility on GitHub.
+
+---
 
 ## License
 

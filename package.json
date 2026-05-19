@@ -1,7 +1,26 @@
 {
   "name": "breach-budget",
   "version": "0.1.0",
+  "description": "Interactive blue-team incident simulator — portfolio showcase (Breach Budget / BreachMark)",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FratresMedAI/BreachMark.git"
+  },
+  "homepage": "https://github.com/FratresMedAI/BreachMark#readme",
+  "bugs": {
+    "url": "https://github.com/FratresMedAI/BreachMark/issues"
+  },
+  "keywords": [
+    "cybersecurity",
+    "blue-team",
+    "incident-response",
+    "nextjs",
+    "typescript",
+    "simulation",
+    "portfolio",
+    "react-flow"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

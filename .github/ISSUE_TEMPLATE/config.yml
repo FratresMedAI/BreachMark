@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Live demo
+    url: https://breach-budget.vercel.app
+    about: Play the interactive simulator in your browser
+  - name: Security
+    url: https://github.com/FratresMedAI/BreachMark/blob/main/SECURITY.md
+    about: Report a vulnerability (fictional-data project)
