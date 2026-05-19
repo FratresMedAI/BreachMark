@@ -81,15 +81,22 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 ## Screenshots
 
+<img src="docs/screenshots/soc-dashboard.svg" alt="BreachMark SOC command view — graph, timeline, HUD, and control shop" width="96%" />
+
+<p align="center"><sub>Illustrative mockup of the in-app layout. If the <a href="https://breachmark.vercel.app">live demo</a> still looks like an older build, hard-refresh (Ctrl+Shift+R) or clear cache — deployments ship as static assets.</sub></p>
+
+<details>
+<summary><strong>More views</strong> (zoomed panels)</summary>
+
 | Landing | Network graph |
 |:---:|:---:|
-| <img src="docs/screenshots/landing.svg" alt="BreachMark landing hero" width="100%" /> | <img src="docs/screenshots/graph.svg" alt="Network graph with compromise glow" width="100%" /> |
+| <img src="docs/screenshots/landing.svg" alt="Landing" width="100%" /> | <img src="docs/screenshots/graph.svg" alt="Graph" width="100%" /> |
 
 | Timeline | Control shop | Scorecard |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/timeline.svg" alt="Attack timeline scrubber" width="100%" /> | <img src="docs/screenshots/controls.svg" alt="Response control shop" width="100%" /> | <img src="docs/screenshots/scorecard.svg" alt="Mission debrief scorecard" width="100%" /> |
+| <img src="docs/screenshots/timeline.svg" alt="Timeline" width="100%" /> | <img src="docs/screenshots/controls.svg" alt="Controls" width="100%" /> | <img src="docs/screenshots/scorecard.svg" alt="Score" width="100%" /> |
 
-<p align="center"><sub>Hero GIF coming soon — record a ~12s gameplay loop to <code>/public/demo.gif</code> and embed at the top of this section.</sub></p>
+</details>
 
 ---
 

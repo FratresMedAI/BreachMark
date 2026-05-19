@@ -62,7 +62,7 @@ export function MetricsHUD() {
         </div>
         <Progress
           value={exfilPct}
-          className="h-2 bg-muted/40 [&>[data-slot=progress-indicator]]:bg-gradient-to-r [&>[data-slot=progress-indicator]]:from-destructive/80 [&>[data-slot=progress-indicator]]:to-destructive"
+          className="h-2 bg-muted/40 [&_[data-slot=progress-indicator]]:bg-gradient-to-r [&_[data-slot=progress-indicator]]:from-[#ff6b35]/90 [&_[data-slot=progress-indicator]]:to-destructive"
         />
       </div>
     </GlassPanel>

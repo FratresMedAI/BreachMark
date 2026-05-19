@@ -28,7 +28,6 @@ import type { NodeRole, SimNodeState } from "@/lib/simulation/types";
 import { useSimulationStore } from "@/store/simulation-store";
 import { CONTROL_MAP } from "@/lib/simulation/controls";
 import { GlassPanel } from "@/components/ui/glass-panel";
-import { ScanlineOverlay } from "@/components/effects/ScanlineOverlay";
 
 const roleIcons: Record<NodeRole, LucideIcon> = {
   workstation: Laptop,
@@ -246,8 +245,7 @@ function NetworkGraphInner() {
         </div>
       }
     >
-      <div className="relative h-full min-h-[300px] w-full">
-        <ScanlineOverlay className="rounded-b-2xl" />
+      <div className="relative h-full min-h-[300px] w-full overflow-hidden rounded-b-2xl">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -261,7 +259,7 @@ function NetworkGraphInner() {
           nodesDraggable={false}
           nodesConnectable={false}
           panOnScroll
-          className="bg-transparent"
+          className="dark h-full min-h-[300px] bg-[#0a0a0a]"
         >
           <Background color="#00f0ff" gap={28} size={1} />
           <Controls showInteractive={false} position="bottom-right" />

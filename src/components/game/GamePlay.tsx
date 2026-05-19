@@ -52,11 +52,25 @@ export function GamePlay() {
 
   return (
     <div className="mx-auto flex h-[calc(100vh-5.5rem)] max-w-[1600px] flex-col gap-4 px-4 pb-4 pt-2">
-      <div className="bm-panel rounded-2xl px-4 py-3">
-        <p className="font-display text-xl font-semibold text-foreground">
-          {scenario.title}
-        </p>
-        <p className="text-sm text-muted-foreground">{scenario.subtitle}</p>
+      <div className="bm-panel relative overflow-hidden rounded-2xl px-4 py-3">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(0,240,255,0.07),transparent_45%,rgba(217,70,239,0.05))]" />
+        <div className="relative flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="bm-tactical-label text-primary/90">Active scenario</p>
+            <p className="font-sans text-xl font-bold tracking-tight text-foreground">
+              {scenario.title}
+            </p>
+            <p className="font-mono text-xs text-muted-foreground">{scenario.subtitle}</p>
+          </div>
+          <div className="hidden items-center gap-2 sm:flex">
+            <span className="rounded border border-primary/35 bg-primary/10 px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-primary">
+              Live
+            </span>
+            <span className="rounded border border-white/10 bg-background/40 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              Sim
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="grid min-h-0 flex-1 gap-4 xl:grid-cols-[1fr_300px]">

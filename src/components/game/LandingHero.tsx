@@ -56,8 +56,9 @@ export function LandingHero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]"
+        className="bm-hero-frame relative p-6 sm:p-8 lg:p-10 backdrop-blur-sm"
       >
+        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
           <motion.div variants={item} className="mb-8">
             <BrandLogo size="hero" glow priority className="mb-6" />
@@ -65,8 +66,15 @@ export function LandingHero() {
               Breach
               <span className="bm-text-gradient">Mark</span>
             </h1>
-            <p className="mt-4 text-xl font-medium tracking-tight text-primary sm:text-2xl">
+            <p className="mt-4 text-xl font-semibold tracking-tight text-primary sm:text-2xl">
               Simulate. Respond. Get Marked.
+            </p>
+            <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] text-muted-foreground">
+              <span className="text-primary">● SYS.ONLINE</span>
+              <span className="hidden text-border sm:inline">|</span>
+              <span className="text-[#d946ef]/90">DEFCON · SIM</span>
+              <span className="hidden text-border sm:inline">|</span>
+              <span>CREDITS: 12</span>
             </p>
           </motion.div>
 
@@ -165,6 +173,7 @@ export function LandingHero() {
             </div>
           </GlassPanel>
         </motion.div>
+        </div>
       </motion.div>
     </section>
   );

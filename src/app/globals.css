@@ -142,6 +142,16 @@
   html {
     @apply font-sans;
   }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
   .font-display {
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     font-weight: 800;
@@ -331,6 +341,52 @@
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 0 24px rgba(251, 191, 36, 0.5));
+}
+
+.bm-hero-frame {
+  position: relative;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  background: linear-gradient(
+    165deg,
+    rgba(12, 14, 22, 0.92) 0%,
+    rgba(8, 8, 12, 0.75) 55%
+  );
+  box-shadow:
+    0 0 0 1px rgba(217, 70, 239, 0.08) inset,
+    0 0 80px -30px rgba(0, 240, 255, 0.25),
+    0 32px 64px -40px rgba(0, 0, 0, 0.9);
+}
+
+.bm-hero-frame::before,
+.bm-hero-frame::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: #00f0ff;
+  border-style: solid;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.bm-hero-frame::before {
+  top: 10px;
+  left: 10px;
+  border-width: 2px 0 0 2px;
+}
+
+.bm-hero-frame::after {
+  bottom: 10px;
+  right: 10px;
+  border-width: 0 2px 2px 0;
+}
+
+/* React Flow — xyflow defaults to LIGHT surfaces unless .dark is set on .react-flow */
+.react-flow.dark {
+  --xy-background-color: #0a0a0a;
+  --xy-node-background-color: transparent;
+  --xy-node-border-default: 1px solid rgba(0, 240, 255, 0.35);
 }
 
 /* React Flow */
