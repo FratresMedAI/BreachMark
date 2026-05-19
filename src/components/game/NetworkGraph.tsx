@@ -22,12 +22,17 @@ import {
   Server,
   type LucideIcon,
 } from "lucide-react";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { NodeRole, SimNodeState } from "@/lib/simulation/types";
 import { useSimulationStore } from "@/store/simulation-store";
 import { CONTROL_MAP } from "@/lib/simulation/controls";
 import { GlassPanel } from "@/components/ui/glass-panel";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const roleIcons: Record<NodeRole, LucideIcon> = {
   workstation: Laptop,
@@ -41,25 +46,25 @@ const compromiseStyles: Record<
   { ring: string; glow: string; badge: string; pulse?: boolean }
 > = {
   0: {
-    ring: "border-primary/30",
-    glow: "",
+    ring: "border-primary/55",
+    glow: "shadow-[0_0_25px_rgba(0,240,255,0.28)]",
     badge: "bg-primary/10 text-primary",
   },
   1: {
-    ring: "border-[#f59e0b]/55",
-    glow: "shadow-[0_0_24px_-4px_rgba(245,158,11,0.45)]",
-    badge: "bg-[#f59e0b]/15 text-[#fbbf24]",
+    ring: "border-[#fbbf24]/70",
+    glow: "shadow-[0_0_25px_rgba(251,191,36,0.32)]",
+    badge: "bg-[#fbbf24]/15 text-[#fbbf24]",
     pulse: true,
   },
   2: {
-    ring: "border-[#ff6b35]/65",
-    glow: "shadow-[0_0_28px_-4px_rgba(255,107,53,0.5)]",
-    badge: "bg-[#ff6b35]/15 text-[#ff9f7a]",
+    ring: "border-destructive/75",
+    glow: "shadow-[0_0_25px_rgba(255,59,92,0.4)]",
+    badge: "bg-destructive/15 text-destructive",
     pulse: true,
   },
   3: {
     ring: "border-destructive/80",
-    glow: "shadow-[0_0_32px_-4px_rgba(255,107,53,0.65)]",
+    glow: "shadow-[0_0_25px_#ff3b5c]",
     badge: "bg-destructive/25 text-destructive",
     pulse: true,
   },
@@ -72,64 +77,79 @@ const HostNode = memo(function HostNode({ data, selected }: NodeProps) {
   const level = node.compromise;
   const style = compromiseStyles[level] ?? compromiseStyles[0];
   const Icon = roleIcons[node.role];
+  const blastRadius = level === 0 ? "Contained surface" : `${level + 1} linked host risk`;
+  const creditCost = data.creditCost as number | undefined;
 
   return (
-    <motion.div
-      layout
-      className={cn(
-        "transition-transform duration-300",
-        selected && "scale-[1.05]",
-        pulse && style.pulse && "bm-pulse-ring",
-      )}
-    >
-      <div
-        className={cn(
-          "relative min-w-[152px] rounded-xl border bg-card/95 px-3.5 py-3 backdrop-blur-md",
-          style.ring,
-          style.glow,
-          highlight &&
-            "ring-2 ring-primary ring-offset-2 ring-offset-background",
-          node.isolated &&
-            "ring-2 ring-[#00f0ff] ring-offset-2 ring-offset-background",
-        )}
-      >
-        <Handle
-          type="target"
-          position={Position.Left}
-          className="!h-2.5 !w-2.5 !border-0 !bg-primary !shadow-[0_0_8px_#00f0ff]"
-        />
-        <div className="mb-2 flex items-center justify-between gap-2">
-          <span
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <motion.div
+          layout
+          animate={pulse ? { scale: [1, 1.06, 1], filter: ["brightness(1)", "brightness(1.45)", "brightness(1)"] } : { scale: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          className={cn(
+            "transition-transform duration-300 ease-out",
+            selected && "scale-[1.05]",
+            pulse && style.pulse && "bm-pulse-ring",
+          )}
+          aria-label={`${node.label} ${node.role} compromise level ${level}`}
+        >
+          <div
             className={cn(
-              "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
-              style.badge,
+              "relative min-w-[168px] rounded-xl border-2 bg-card/95 px-3.5 py-3 backdrop-blur-md",
+              style.ring,
+              style.glow,
+              "shadow-[inset_0_0_24px_rgba(0,240,255,0.04)]",
+              highlight &&
+                "ring-2 ring-primary ring-offset-2 ring-offset-background",
+              node.isolated &&
+                "ring-2 ring-[#22ff88] ring-offset-2 ring-offset-background",
             )}
           >
-            <Icon className="h-3 w-3" />
-            {node.role}
-          </span>
-          {node.isolated && (
-            <span className="text-[9px] font-semibold uppercase tracking-widest text-primary">
-              Isolated
-            </span>
-          )}
-        </div>
-        <p className="font-mono text-sm font-semibold tracking-tight text-foreground">
-          {node.label}
+            <Handle
+              type="target"
+              position={Position.Left}
+              className="!h-2.5 !w-2.5 !border-0 !bg-primary !shadow-[0_0_8px_#00f0ff]"
+            />
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
+                  style.badge,
+                )}
+              >
+                <Icon className="h-3 w-3" />
+                {node.role}
+              </span>
+              {node.isolated && (
+                <span className="text-[9px] font-semibold uppercase tracking-widest text-[#22ff88]">
+                  Isolated
+                </span>
+              )}
+            </div>
+            <p className="font-mono text-sm font-semibold tracking-tight text-foreground">
+              {node.label}
+            </p>
+            <p className="mt-1.5 font-mono text-[10px] text-muted-foreground">
+              Blast radius:{" "}
+              <span className="font-semibold text-foreground">{blastRadius}</span>
+            </p>
+            <Handle
+              type="source"
+              position={Position.Right}
+              className="!h-2.5 !w-2.5 !border-0 !bg-primary !shadow-[0_0_8px_#00f0ff]"
+            />
+          </div>
+        </motion.div>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="space-y-1">
+        <p className="font-semibold text-foreground">Blast radius preview</p>
+        <p className="font-mono text-primary">{node.label} · level {level}</p>
+        <p className="text-muted-foreground">
+          {creditCost ? `${creditCost} credits to deploy selected control here.` : "Select a response control to preview credit cost."}
         </p>
-        {level > 0 && (
-          <p className="mt-1.5 font-mono text-[10px] text-muted-foreground">
-            Compromise{" "}
-            <span className="font-semibold text-foreground">{level}</span>
-          </p>
-        )}
-        <Handle
-          type="source"
-          position={Position.Right}
-          className="!h-2.5 !w-2.5 !border-0 !bg-primary !shadow-[0_0_8px_#00f0ff]"
-        />
-      </div>
-    </motion.div>
+      </TooltipContent>
+    </Tooltip>
   );
 });
 
@@ -142,6 +162,12 @@ function NetworkGraphInner() {
   const targetNodeId = useSimulationStore((s) => s.targetNodeId);
   const applyControl = useSimulationStore((s) => s.applyControl);
   const simTime = useSimulationStore((s) => s.simTime);
+  const [initializing, setInitializing] = useState(true);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setInitializing(false), 650);
+    return () => window.clearTimeout(timeout);
+  }, []);
 
   const lastEvent = replay.resolvedEvents[replay.resolvedEvents.length - 1];
   const pulseId =
@@ -152,6 +178,9 @@ function NetworkGraphInner() {
   const highlightRoles = selectedControlId
     ? CONTROL_MAP[selectedControlId]?.targetRoles
     : null;
+  const selectedControlCost = selectedControlId
+    ? CONTROL_MAP[selectedControlId]?.cost
+    : undefined;
 
   const nodes: Node[] = useMemo(
     () =>
@@ -164,6 +193,7 @@ function NetworkGraphInner() {
           pulse: n.id === pulseId,
           highlight:
             highlightRoles?.includes(n.role) && selectedControlId != null,
+          creditCost: selectedControlCost,
         },
         selected: targetNodeId === n.id,
       })),
@@ -173,6 +203,7 @@ function NetworkGraphInner() {
       targetNodeId,
       highlightRoles,
       selectedControlId,
+      selectedControlCost,
     ],
   );
 
@@ -184,7 +215,7 @@ function NetworkGraphInner() {
         const hot =
           (sourceNode?.compromise ?? 0) > 0 ||
           (targetNode?.compromise ?? 0) > 0;
-        const color = hot ? "#ff6b35" : "#00f0ff";
+        const color = hot ? "#ff3b5c" : "#00f0ff";
         return {
           id: e.id,
           source: e.source,
@@ -192,9 +223,9 @@ function NetworkGraphInner() {
           animated: hot,
           style: {
             stroke: color,
-            strokeWidth: hot ? 2.5 : 1.75,
+            strokeWidth: hot ? 2.75 : 1.75,
             opacity: hot ? 0.95 : 0.55,
-            strokeDasharray: hot ? "8 4" : undefined,
+            strokeDasharray: "8 4",
             animation: hot ? "bm-edge-flow 1s linear infinite" : undefined,
           },
           markerEnd: {
@@ -238,14 +269,31 @@ function NetworkGraphInner() {
               Clean
             </span>
             <span className="flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-destructive shadow-[0_0_8px_#ff6b35]" />
+              <span className="h-2 w-2 rounded-full bg-[#22ff88] shadow-[0_0_8px_#22ff88]" />
+              Safe
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 rounded-full bg-destructive shadow-[0_0_8px_#ff3b5c]" />
               Hot
             </span>
           </div>
         </div>
       }
     >
-      <div className="relative h-full min-h-[300px] w-full overflow-hidden rounded-b-2xl">
+      <div className="relative h-full min-h-[300px] w-full overflow-hidden rounded-b-xl">
+        <div className="bm-grid pointer-events-none absolute inset-0 z-0 opacity-70" />
+        <div className="bm-scanlines pointer-events-none absolute inset-0 z-10 opacity-60" />
+        {initializing && (
+          <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center bg-background/60 backdrop-blur-sm">
+            <div className="w-64 rounded-xl border border-primary/20 bg-card/70 p-4">
+              <div className="bm-skeleton mb-3 h-3 rounded" />
+              <div className="bm-skeleton h-20 rounded-xl" />
+              <p className="mt-3 font-mono text-xs text-primary">
+                Initializing graph telemetry...
+              </p>
+            </div>
+          </div>
+        )}
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -266,7 +314,8 @@ function NetworkGraphInner() {
           <MiniMap
             nodeColor={() => "rgba(0, 240, 255, 0.5)"}
             maskColor="rgba(0, 240, 255, 0.08)"
-            className="!bottom-3 !left-3"
+            className="!bottom-3 !right-3 !left-auto"
+            style={{ width: 128, height: 92 }}
             pannable
             zoomable
           />

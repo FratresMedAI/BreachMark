@@ -1,6 +1,6 @@
 export function SiteFooter() {
   return (
-    <footer className="relative z-10 border-t border-border/40 px-4 py-3 text-center">
+    <footer className="relative z-10 border-t border-border/40 bg-background/70 px-4 py-3 text-center backdrop-blur-sm">
       <p className="text-[11px] tracking-wide text-muted-foreground">
         Made with care for portfolio ·{" "}
         <a

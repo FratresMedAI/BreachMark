@@ -7,7 +7,7 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "900"],
 });
 
 const geistMono = Geist_Mono({
@@ -19,19 +19,19 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://breachmark.vercel.app",
   ),
-  title: "BreachMark — Interactive Defensive Simulator",
+  title: "BreachMark — Cyber SOC Command Center",
   description:
-    "Blue-team incident simulator: 12 response credits, live attack timeline, and blast-radius graph. Pause the breach and deploy controls.",
+    "Simulate a live breach, spend response credits, and prove containment decisions in a premium cyber SOC dashboard.",
   openGraph: {
-    title: "BreachMark — Simulate. Respond. Get Marked.",
+    title: "BreachMark — Simulate. Spend credits. Get Marked.",
     description:
-      "You get 12 response credits. The attack keeps moving. Pause the timeline and shrink the blast radius.",
+      "A recruiter-ready cyber SOC command center with deterministic replay, blast-radius graphing, and a cinematic scorecard.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "BreachMark — Cyber SOC incident simulator",
+        alt: "BreachMark cyber SOC command center preview",
       },
     ],
   },
@@ -51,7 +51,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground selection:bg-primary/25 selection:text-foreground">
         <div className="flex min-h-full flex-1 flex-col">{children}</div>
         <SiteFooter />
         <Toaster

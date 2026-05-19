@@ -19,9 +19,10 @@ export function BriefingPanel() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mx-auto w-full max-w-2xl px-4 py-8"
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="mx-auto w-full max-w-3xl px-4 py-8"
     >
       <GlassPanel
         glow
@@ -41,7 +42,7 @@ export function BriefingPanel() {
             {phases.map((phase, i) => (
               <li
                 key={phase}
-                className="flex gap-3 rounded-lg border border-primary/15 bg-background/25 px-3 py-2"
+                className="bm-neon-hover flex gap-3 rounded-xl border border-primary/15 bg-background/25 px-3 py-2"
               >
                 <span className="font-mono text-xs font-semibold text-primary">
                   {String(i + 1).padStart(2, "0")}
@@ -50,7 +51,7 @@ export function BriefingPanel() {
               </li>
             ))}
           </ol>
-          <p className="rounded-lg border border-primary/25 bg-primary/5 px-3 py-2 text-xs text-primary">
+          <p className="rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-xs text-primary">
             Tip: Isolate FIN-WS-04 before T+180s or reset credentials early to
             keep DC-01 clean.
           </p>
@@ -58,6 +59,7 @@ export function BriefingPanel() {
             className="bm-glow-cyan h-12 w-full rounded-xl text-base font-semibold"
             size="lg"
             onClick={() => setPhase("play")}
+            aria-label="Start incident response simulation"
           >
             Start incident response
             <ArrowRight className="ml-2 h-4 w-4" />

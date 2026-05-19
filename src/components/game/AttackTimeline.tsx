@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { motion } from "framer-motion";
 import { Flag, Pause, Play, SkipForward } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -65,6 +66,7 @@ export function AttackTimeline() {
                 variant="outline"
                 className="rounded-xl border-primary/25 bg-background/40"
                 onClick={() => setIsPlaying(!isPlaying)}
+                aria-label={isPlaying ? "Pause attack timeline" : "Play attack timeline"}
               >
                 {isPlaying ? (
                   <Pause className="h-4 w-4" />
@@ -85,6 +87,7 @@ export function AttackTimeline() {
                 variant="outline"
                 className="rounded-xl border-primary/25 bg-background/40"
                 onClick={skipToNext}
+                aria-label="Skip to next attack event"
               >
                 <SkipForward className="h-4 w-4" />
               </Button>
@@ -100,6 +103,7 @@ export function AttackTimeline() {
                 size="sm"
                 className="bm-glow-cyan rounded-xl"
                 onClick={() => finishScenario()}
+                aria-label="Finish scenario and open scorecard"
               >
                 <Flag className="mr-1 h-4 w-4" />
                 Finish
@@ -130,13 +134,19 @@ export function AttackTimeline() {
           })}
         </div>
 
-        <div className="relative h-3 overflow-hidden rounded-full bg-muted/30">
-          <div
-            className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary/60 via-primary to-[#d946ef]/80 transition-all duration-200"
+        <div className="relative grid h-4 overflow-hidden rounded-xl border border-primary/15 bg-muted/30">
+          <div className="absolute inset-0 grid grid-cols-4">
+            {PHASE_SEGMENTS.map((seg) => (
+              <div key={seg.label} className="border-r border-primary/10 last:border-r-0" />
+            ))}
+          </div>
+          <motion.div
+            className="absolute inset-y-0 left-0 rounded-xl bg-gradient-to-r from-primary/65 via-primary to-accent/85"
             style={{ width: `${progress}%` }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
           <div
-            className="absolute top-0 bottom-0 w-0.5 -translate-x-1/2 bg-primary shadow-[0_0_16px_#00f0ff]"
+            className="absolute top-[-6px] bottom-[-6px] w-1 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_18px_#00f0ff]"
             style={{
               left: `${progress}%`,
               animation: "bm-playhead-glow 2s ease-in-out infinite",
@@ -158,13 +168,13 @@ export function AttackTimeline() {
                   <button
                     type="button"
                     className={cn(
-                      "absolute top-3 h-3.5 w-3.5 -translate-x-1/2 rounded-sm border-2 transition-all hover:scale-125",
+                      "bm-focus-ring absolute top-3 h-3.5 w-3.5 -translate-x-1/2 rounded-sm border-2 transition-all duration-200 ease-out hover:scale-125",
                       passed &&
                         contained &&
                         "border-primary bg-primary shadow-[0_0_10px_rgba(0,240,255,0.7)]",
                       passed &&
                         !contained &&
-                        "border-destructive bg-destructive shadow-[0_0_10px_rgba(255,107,53,0.6)]",
+                        "border-destructive bg-destructive shadow-[0_0_10px_rgba(255,59,92,0.6)]",
                       !passed && "border-border/80 bg-muted/80",
                     )}
                     style={{ left: `${pct}%` }}
@@ -172,13 +182,14 @@ export function AttackTimeline() {
                       setIsPlaying(false);
                       setSimTime(ev.at);
                     }}
+                    aria-label={`Scrub to ${ev.title} at T plus ${ev.at} seconds`}
                   />
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-[200px]">
                   <p className="font-semibold text-foreground">{ev.title}</p>
                   <p className="font-mono text-primary">T+{ev.at}s</p>
                   {ev.target && (
-                    <p className="text-muted-foreground">? {ev.target}</p>
+                    <p className="text-muted-foreground">Target: {ev.target}</p>
                   )}
                 </TooltipContent>
               </Tooltip>
@@ -196,9 +207,11 @@ export function AttackTimeline() {
           setIsPlaying(false);
           setSimTime(v);
         }}
+        aria-label="Scrub attack timeline"
       />
 
-      <div className="flex flex-wrap gap-2 text-[11px]">
+      <div className="flex flex-wrap items-center gap-2 text-[11px]">
+        <span className="bm-tactical-label text-[9px]">Recent events</span>
         {replay.resolvedEvents
           .filter((r) => r.event.at <= simTime)
           .slice(-3)

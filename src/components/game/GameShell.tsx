@@ -1,18 +1,26 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { LandingHero } from "@/components/game/LandingHero";
-import { BriefingPanel } from "@/components/game/BriefingPanel";
-import { GamePlay } from "@/components/game/GamePlay";
-import { ScoreCard } from "@/components/game/ScoreCard";
 import { useSimulationStore } from "@/store/simulation-store";
 
+const BriefingPanel = dynamic(() =>
+  import("@/components/game/BriefingPanel").then((mod) => mod.BriefingPanel),
+);
+const GamePlay = dynamic(() =>
+  import("@/components/game/GamePlay").then((mod) => mod.GamePlay),
+);
+const ScoreCard = dynamic(() =>
+  import("@/components/game/ScoreCard").then((mod) => mod.ScoreCard),
+);
+
 const phaseMotion = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 0, y: 16, scale: 0.99 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
-  transition: { duration: 0.35 },
-};
+  exit: { opacity: 0, y: -10, scale: 0.99 },
+  transition: { type: "spring", stiffness: 300, damping: 30 },
+} as const;
 
 export function GameShell() {
   const phase = useSimulationStore((s) => s.phase);

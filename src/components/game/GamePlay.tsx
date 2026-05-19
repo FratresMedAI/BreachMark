@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { PanelRight } from "lucide-react";
 import { toast } from "sonner";
 import { AttackTimeline } from "@/components/game/AttackTimeline";
@@ -51,9 +52,13 @@ export function GamePlay() {
   }, [lastToast, clearToast]);
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-5.5rem)] max-w-[1600px] flex-col gap-4 px-4 pb-4 pt-2">
-      <div className="bm-panel relative overflow-hidden rounded-2xl px-4 py-3">
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(0,240,255,0.07),transparent_45%,rgba(217,70,239,0.05))]" />
+    <div className="mx-auto flex min-h-[calc(100vh-5.5rem)] w-full max-w-[1600px] flex-col gap-4 px-3 pb-4 pt-2 sm:px-4 xl:h-[calc(100vh-5.5rem)]">
+      <motion.div
+        layout
+        className="bm-panel relative overflow-hidden rounded-xl px-4 py-3"
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(0,240,255,0.08),transparent_45%,rgba(192,38,211,0.07))]" />
         <div className="relative flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="bm-tactical-label text-primary/90">Active scenario</p>
@@ -66,14 +71,14 @@ export function GamePlay() {
             <span className="rounded border border-primary/35 bg-primary/10 px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-primary">
               Live
             </span>
-            <span className="rounded border border-white/10 bg-background/40 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              Sim
+            <span className="rounded border border-accent/30 bg-accent/10 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
+              60fps target
             </span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid min-h-0 flex-1 gap-4 xl:grid-cols-[1fr_300px]">
+      <div className="grid min-h-0 flex-1 gap-4 xl:grid-cols-[1fr_320px]">
         <div className="flex min-h-0 flex-col gap-4">
           <div className="min-h-[280px] flex-1 sm:min-h-[300px]">
             <NetworkGraph />
@@ -91,6 +96,7 @@ export function GamePlay() {
           <Button
             className="bm-glow-cyan fixed bottom-20 right-4 z-30 xl:hidden"
             size="lg"
+            aria-label="Open response controls"
           >
             <PanelRight className="mr-2 h-4 w-4" />
             Controls

@@ -12,10 +12,18 @@
 [![CI](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml/badge.svg)](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 
+<br />
+
+<img src="public/demo.gif" alt="BreachMark 12-second simulator playthrough preview" width="100%" />
+
+<br />
+
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-000?style=flat-square&logo=vercel&logoColor=white)](https://breachmark.vercel.app)
 [![Next.js](https://img.shields.io/badge/Next.js-16-000?style=flat-square&logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-components-000?style=flat-square)](https://ui.shadcn.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-microinteractions-c026d3?style=flat-square)](https://motion.dev/)
+[![MITRE-inspired](https://img.shields.io/badge/MITRE--inspired-attack_flow-ff3b5c?style=flat-square)](SCENARIO_DESIGN.md)
 [![React Flow](https://img.shields.io/badge/React_Flow-graph-ff0072?style=flat-square)](https://reactflow.dev/)
 [![Vitest](https://img.shields.io/badge/Vitest-tested-6E9F18?style=flat-square&logo=vitest)](https://vitest.dev/)
 
@@ -36,9 +44,9 @@
 | | |
 |---|---|
 | **Problem** | Security training is often static—checklists and slides don't show *tradeoffs under pressure*. |
-| **Solution** | A playable incident where every defensive control costs credits and the timeline rewinds deterministically. |
+| **Solution** | A premium cyber SOC command center where every defensive control costs credits and the timeline rewinds deterministically. |
 | **Audience** | Recruiters, hiring managers, and blue-team learners who want a **60-second** interactive proof of skill. |
-| **Status** | v1.2 — Cyber SOC dashboard UI, one polished scenario (*Monday Morning Phish*), full play loop, shareable scorecard. |
+| **Status** | v1.3 — Series-A visual reset, neon glassmorphism UI, one polished scenario (*Monday Morning Phish*), full play loop, shareable scorecard. |
 
 > **Hook:** You get **12 response credits**. The attack keeps moving. Pause the timeline, spend credits, watch the blast radius shrink or spread.
 
@@ -58,22 +66,22 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 ## Features
 
-| Feature | What it shows |
-|---------|----------------|
-| 💳 **Credit budget** | Isolate (3cr), reset creds (2cr), block IOC (2cr), logging (2cr), revoke sessions (3cr), awareness (1cr) |
-| 🕸️ **Network graph** | React Flow map with glow nodes, MiniMap, compromise levels, click-to-target controls |
-| ⏱️ **Timeline scrubber** | Video-editor rail, keyboard shortcuts (`Space` / `→` / `F`), deterministic replay from T+0 |
-| 📊 **Scorecard** | Animated letter grade, confetti on **A**, [LinkedIn-ready copy](https://breachmark.vercel.app) |
-| 🔒 **Fictional data only** | No scanning, no real telemetry—safe to demo anywhere |
+| Feature | Recruiter signal | Implementation |
+|---------|------------------|----------------|
+| **Credit budget** | Prioritization under pressure | Isolate (3cr), reset creds (2cr), block IOC (2cr), logging (2cr), revoke sessions (3cr), awareness (1cr) |
+| **Blast-radius graph** | Systems thinking | React Flow topology with compromise levels, MiniMap, active breach glow, and click-to-target controls |
+| **Attack timeline** | Incident sequencing | Segmented rail, keyboard shortcuts (`Space` / `→` / `F`), deterministic replay from T+0 |
+| **Scorecard** | Shareable outcome | Animated letter grade, confetti on **A**, LinkedIn-ready copy |
+| **Safe demo data** | Responsible security tooling | Fictional scenario data only; no scanning, no real telemetry |
 
 ---
 
 ## Quick start (recruiter path)
 
 1. Open the **[live demo](https://breachmark.vercel.app)** (no install).  
-2. **Launch Simulator** → **Start incident response**.  
+2. **Launch Simulator** → **Start incident response** inside the cyber SOC command center.  
 3. Deploy **Isolate host** on `FIN-WS-04` before **T+180s** (or **Force password reset** on finance).  
-4. Scrub the timeline → **Finish** → **Copy result**.
+4. Scrub the glowing timeline → **Finish** → **Copy LinkedIn Summary**.
 
 **Win condition to try:** DC stays clean and exfil stays at **0** when finance is isolated early.
 
@@ -81,22 +89,21 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 ## Screenshots
 
-<img src="docs/screenshots/soc-dashboard.svg" alt="BreachMark SOC command view — graph, timeline, HUD, and control shop" width="96%" />
+<img src="public/screenshots/landing.svg" alt="BreachMark landing hero with neon Launch Simulator CTA" width="100%" />
 
-<p align="center"><sub>Illustrative mockup of the in-app layout. If the <a href="https://breachmark.vercel.app">live demo</a> still looks like an older build, hard-refresh (Ctrl+Shift+R) or clear cache — deployments ship as static assets.</sub></p>
+<br />
 
-<details>
-<summary><strong>More views</strong> (zoomed panels)</summary>
+<img src="public/screenshots/simulator.svg" alt="BreachMark simulator command center with graph, timeline, HUD, and response controls" width="100%" />
 
-| Landing | Network graph |
-|:---:|:---:|
-| <img src="docs/screenshots/landing.svg" alt="Landing" width="100%" /> | <img src="docs/screenshots/graph.svg" alt="Graph" width="100%" /> |
+<br />
 
-| Timeline | Control shop | Scorecard |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/timeline.svg" alt="Timeline" width="100%" /> | <img src="docs/screenshots/controls.svg" alt="Controls" width="100%" /> | <img src="docs/screenshots/scorecard.svg" alt="Score" width="100%" /> |
+<img src="public/screenshots/timeline-controls.svg" alt="BreachMark attack timeline and response control shop" width="100%" />
 
-</details>
+<br />
+
+<img src="public/screenshots/scorecard.svg" alt="BreachMark scorecard with animated grade and LinkedIn summary CTA" width="100%" />
+
+<p align="center"><sub>Static README visuals mirror the in-app v1.3 layout and are kept in <code>public/screenshots/</code>. For the real interaction model, use the <a href="https://breachmark.vercel.app">live demo</a>.</sub></p>
 
 ---
 

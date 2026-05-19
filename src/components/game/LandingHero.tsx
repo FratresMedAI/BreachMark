@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Play, Shield, UserRound, Zap } from "lucide-react";
+import { Code2, Play, Radar, Shield, UserRound, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BrandLogo } from "@/components/brand/BrandLogo";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { ScanlineOverlay } from "@/components/effects/ScanlineOverlay";
 import { HeroGraphPreview } from "@/components/game/HeroGraphPreview";
@@ -44,9 +43,12 @@ export function LandingHero() {
   const setPhase = useSimulationStore((s) => s.setPhase);
 
   return (
-    <section className="relative mx-auto flex min-h-[calc(100vh-3rem)] max-w-6xl flex-col justify-center overflow-hidden px-6 py-16">
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-50">
-        <div className="absolute left-1/2 top-1/3 h-[420px] w-[620px] -translate-x-1/2 -translate-y-1/2">
+    <section className="relative mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-7xl flex-col justify-center overflow-hidden px-4 py-12 sm:px-6 lg:py-16">
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="bm-grid absolute inset-0 opacity-80" />
+        <div className="bm-particles absolute inset-0 opacity-80" />
+        <div className="bm-scanlines absolute inset-0" />
+        <div className="absolute left-1/2 top-1/3 h-[520px] w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-45 blur-[0.2px]">
           <HeroGraphPreview />
         </div>
         <ScanlineOverlay />
@@ -56,23 +58,26 @@ export function LandingHero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="bm-hero-frame relative p-6 sm:p-8 lg:p-10 backdrop-blur-sm"
+        className="bm-hero-frame relative overflow-hidden p-5 backdrop-blur-sm sm:p-8 lg:p-10"
       >
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+        <div className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
           <motion.div variants={item} className="mb-8">
-            <BrandLogo size="hero" glow priority className="mb-6" />
-            <h1 className="font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-              Breach
-              <span className="bm-text-gradient">Mark</span>
+            <h1 className="relative inline-block font-display text-6xl font-black leading-[0.95] tracking-tight text-foreground sm:text-7xl lg:text-8xl">
+              Breach<span className="bm-text-gradient">Mark</span>
+              <span className="absolute -bottom-3 left-1 h-1 w-[78%] rounded-full bg-primary shadow-[0_0_24px_#00f0ff]" />
             </h1>
-            <p className="mt-4 text-xl font-semibold tracking-tight text-primary sm:text-2xl">
-              Simulate. Respond. Get Marked.
+            <p className="mt-7 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+              Simulate. <span className="text-accent drop-shadow-[0_0_12px_rgba(192,38,211,0.75)]">Spend credits.</span>{" "}
+              Get Marked.
             </p>
             <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] text-muted-foreground">
-              <span className="text-primary">● SYS.ONLINE</span>
+              <span className="text-primary">SYS.ONLINE</span>
               <span className="hidden text-border sm:inline">|</span>
-              <span className="text-[#d946ef]/90">DEFCON · SIM</span>
+              <span className="text-accent">DEFCON · SIM</span>
               <span className="hidden text-border sm:inline">|</span>
               <span>CREDITS: 12</span>
             </p>
@@ -80,7 +85,7 @@ export function LandingHero() {
 
           <motion.p
             variants={item}
-            className="max-w-lg text-lg leading-relaxed text-muted-foreground"
+            className="max-w-xl text-lg leading-relaxed text-muted-foreground"
           >
             Twelve response credits. A live attack timeline. A network graph that
             reacts when you pause the breach and deploy controls.
@@ -89,8 +94,9 @@ export function LandingHero() {
           <motion.div variants={item} className="mt-10 flex flex-wrap gap-3">
             <Button
               size="lg"
-              className="bm-glow-cyan h-12 rounded-xl px-8 text-base font-semibold"
+              className="bm-glow-cyan bm-pulse-ring h-12 rounded-xl px-8 text-base font-semibold"
               onClick={() => setPhase("briefing")}
+              aria-label="Launch BreachMark simulator"
             >
               <Play className="mr-2 h-5 w-5" />
               Launch Simulator
@@ -135,7 +141,7 @@ export function LandingHero() {
               <motion.li
                 key={f.title}
                 variants={item}
-                className="bm-panel group rounded-xl p-4 transition-shadow hover:bm-glow-cyan"
+                className="bm-panel bm-neon-hover group rounded-xl p-4"
               >
                 <f.icon className="mb-2 h-4 w-4 text-primary" />
                 <p className="text-sm font-semibold text-foreground">{f.title}</p>
@@ -149,13 +155,18 @@ export function LandingHero() {
 
         <motion.div variants={item} className="relative">
           <GlassPanel glow variant="hud" className="relative p-5">
-            <ScanlineOverlay className="rounded-2xl" />
+            <ScanlineOverlay className="rounded-xl" />
             <div className="relative z-10">
-              <p className="bm-tactical-label text-primary/80">SOC preview</p>
-              <p className="mt-1 font-mono text-sm text-foreground">
-                Monday Morning Phish
-              </p>
-              <div className="my-4 h-36 rounded-lg border border-primary/15 bg-background/40 p-2">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <p className="bm-tactical-label text-primary/80">SOC preview</p>
+                  <p className="mt-1 font-mono text-sm text-foreground">
+                    Monday Morning Phish
+                  </p>
+                </div>
+                <Radar className="h-5 w-5 text-primary drop-shadow-[0_0_10px_#00f0ff]" />
+              </div>
+              <div className="my-4 h-44 rounded-xl border border-primary/15 bg-background/40 p-2">
                 <HeroGraphPreview />
               </div>
               <div className="grid grid-cols-2 gap-2 font-mono text-xs">
@@ -167,6 +178,7 @@ export function LandingHero() {
               <Button
                 className="bm-glow-cyan mt-4 w-full rounded-xl"
                 onClick={() => setPhase("briefing")}
+                aria-label="Launch BreachMark simulator from SOC preview"
               >
                 Launch Simulator
               </Button>

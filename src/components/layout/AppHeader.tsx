@@ -28,7 +28,7 @@ export function AppHeader() {
   };
 
   return (
-    <header className="bm-panel relative z-20 mx-4 mt-4 flex items-center justify-between gap-4 rounded-2xl border-primary/20 px-4 py-2.5">
+    <header className="bm-panel relative z-20 mx-4 mt-4 flex items-center justify-between gap-4 rounded-xl border-primary/20 px-4 py-2.5">
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"
@@ -41,7 +41,7 @@ export function AppHeader() {
         </Button>
         <BrandLogo size="sm" />
         <div>
-          <p className="font-display text-lg font-bold tracking-tight text-foreground">
+          <p className="font-display text-lg font-black tracking-tight text-foreground">
             Breach<span className="bm-text-gradient">Mark</span>
           </p>
           <p

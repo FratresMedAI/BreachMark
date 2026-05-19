@@ -17,7 +17,7 @@ export function GlassPanel({
   return (
     <div
       className={cn(
-        "bm-panel overflow-hidden rounded-2xl",
+        "bm-panel bm-neon-hover overflow-hidden rounded-xl",
         variant === "hud" && "bm-panel-hud",
         variant === "danger" && "bm-panel-danger",
         glow && "bm-glow-cyan",

@@ -27,6 +27,10 @@ export function ScoreCard() {
     0,
     scenario.nodes.length - replay.metrics.hostsCompromised,
   );
+  const containmentPct = Math.round(
+    (replay.metrics.eventsContained / scenario.events.length) * 100,
+  );
+  const exfilPrevented = Math.max(0, 20600 - replay.metrics.recordsExfiltrated);
 
   const isGradeA = grade === "A";
 
@@ -39,11 +43,13 @@ export function ScoreCard() {
       particleCount: 80,
       spread: 70,
       origin: { y: 0.55 },
-      colors: ["#00f0ff", "#fbbf24", "#d946ef"],
+      colors: ["#00f0ff", "#fbbf24", "#c026d3"],
     });
   }, [isGradeA]);
 
   const stats = [
+    ["Containment", `${containmentPct}%`],
+    ["Exfil prevented", exfilPrevented.toLocaleString()],
     ["Hosts saved", String(hostsSaved)],
     ["Records exfiltrated", replay.metrics.recordsExfiltrated.toLocaleString()],
     [
@@ -55,23 +61,25 @@ export function ScoreCard() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mx-auto w-full max-w-lg px-4 py-12"
+      initial={{ opacity: 0, y: 28, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="fixed inset-0 z-40 flex items-center justify-center overflow-y-auto bg-background/82 px-4 py-8 backdrop-blur-md"
     >
-      <GlassPanel glow className="overflow-hidden">
+      <GlassPanel glow className="w-full max-w-3xl overflow-hidden">
         <div className="relative px-6 pb-2 pt-8 text-center">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,240,255,0.2),transparent_55%)]" />
+          <div className="bm-grid pointer-events-none absolute inset-0 opacity-60" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,240,255,0.22),transparent_55%)]" />
           <BrandLogo size="lg" glow className="mx-auto mb-2" />
           <p className="relative bm-tactical-label">Mission debrief</p>
           <motion.p
             className={cn(
-              "relative mt-2 font-display text-8xl font-extrabold",
+              "relative mt-2 font-display text-8xl font-black",
               isGradeA ? "bm-grade-a bm-glow-gold" : "bm-text-gradient",
             )}
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 14 }}
+            transition={{ type: "spring", stiffness: 300, damping: 18 }}
           >
             {grade}
           </motion.p>
@@ -82,14 +90,14 @@ export function ScoreCard() {
             {stageMsg}
           </p>
         </div>
-        <ul className="grid gap-2 px-6 pb-4 text-sm">
+        <ul className="grid gap-2 px-6 pb-4 text-sm sm:grid-cols-2">
           {stats.map(([label, value], i) => (
             <motion.li
               key={String(label)}
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15 + i * 0.06 }}
-              className="flex justify-between rounded-lg border border-primary/10 bg-background/30 px-3 py-2"
+              className="bm-neon-hover flex justify-between rounded-xl border border-primary/10 bg-background/30 px-3 py-2"
             >
               <span className="text-muted-foreground">{label}</span>
               <span className="font-mono font-medium text-foreground">
@@ -102,14 +110,21 @@ export function ScoreCard() {
           <Button
             className="bm-glow-cyan flex-1 rounded-xl"
             onClick={() => {
-              void navigator.clipboard.writeText(scoreSummary);
-              toast.success("Score copied — ready for LinkedIn");
+              const richSummary = `🚨 BreachMark SOC run complete: ${grade} grade. ${containmentPct}% containment, ${hostsSaved} hosts saved, ${exfilPrevented.toLocaleString()} records protected. #CyberSecurity #BlueTeam #IncidentResponse #BreachMark`;
+              void navigator.clipboard.writeText(`${richSummary}\n\n${scoreSummary}`);
+              toast.success("LinkedIn summary copied");
             }}
+            aria-label="Copy LinkedIn summary"
           >
             <Copy className="mr-2 h-4 w-4" />
-            Copy result
+            Copy LinkedIn Summary
           </Button>
-          <Button variant="outline" className="flex-1 rounded-xl border-primary/25" onClick={reset}>
+          <Button
+            variant="outline"
+            className="flex-1 rounded-xl border-primary/25"
+            onClick={reset}
+            aria-label="Play the BreachMark scenario again"
+          >
             <RotateCcw className="mr-2 h-4 w-4" />
             Play again
           </Button>
