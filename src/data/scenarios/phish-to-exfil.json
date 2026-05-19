@@ -4,55 +4,55 @@
   "subtitle": "Dual gateway phish → domain controller → object storage",
   "description": "A finance analyst opens a payroll lure while the attacker probes two ingress paths. You have 12 response credits. Pause the timeline, deploy controls, and shrink the blast radius before exfil.",
   "startingCredits": 12,
-  "maxTime": 480,
+  "maxTime": 600,
   "nodes": [
     {
       "id": "gw-edge",
       "label": "Edge FW",
       "role": "gateway",
-      "position": { "x": 70, "y": 150 }
+      "position": { "x": 40, "y": 120 }
     },
     {
       "id": "gw-vpn",
       "label": "VPN GW",
       "role": "gateway",
-      "position": { "x": 70, "y": 310 }
+      "position": { "x": 40, "y": 360 }
     },
     {
       "id": "ws-finance",
       "label": "FIN-WS-04",
       "role": "workstation",
-      "position": { "x": 280, "y": 80 }
+      "position": { "x": 310, "y": 40 }
     },
     {
       "id": "ws-ops",
       "label": "OPS-WS-07",
       "role": "workstation",
-      "position": { "x": 280, "y": 210 }
+      "position": { "x": 310, "y": 200 }
     },
     {
       "id": "ws-hr",
       "label": "HR-WS-11",
       "role": "workstation",
-      "position": { "x": 280, "y": 340 }
+      "position": { "x": 310, "y": 360 }
     },
     {
       "id": "ws-eng",
       "label": "ENG-WS-19",
       "role": "workstation",
-      "position": { "x": 520, "y": 340 }
+      "position": { "x": 600, "y": 360 }
     },
     {
       "id": "dc-01",
       "label": "DC-01",
       "role": "dc",
-      "position": { "x": 520, "y": 200 }
+      "position": { "x": 600, "y": 200 }
     },
     {
       "id": "s3-backup",
       "label": "S3 Backup",
       "role": "storage",
-      "position": { "x": 760, "y": 200 }
+      "position": { "x": 890, "y": 200 }
     }
   ],
   "edges": [
@@ -69,13 +69,15 @@
   "events": [
     {
       "id": "ev-1",
-      "at": 20,
+      "at": 30,
       "type": "initial_access",
       "title": "Malicious attachment opened",
-      "description": "User on FIN-WS-04 executes a macro-enabled payroll lure.",
-      "source": "ws-finance",
+      "description": "A payroll lure lands through the edge gateway and executes on FIN-WS-04.",
+      "source": "gw-edge",
+      "target": "ws-finance",
       "blockedBy": [
         { "controlId": "awareness-push" },
+        { "controlId": "isolate-host", "targetNode": "gw-edge" },
         { "controlId": "isolate-host", "targetNode": "ws-finance" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "ws-finance", "level": 1 }]
@@ -123,11 +125,11 @@
     },
     {
       "id": "ev-5",
-      "at": 165,
-      "type": "lateral_movement",
+      "at": 45,
+      "type": "initial_access",
       "title": "VPN token replay to operations",
-      "description": "Stolen session material opens a second path into OPS-WS-07.",
-      "source": "ws-finance",
+      "description": "A separate stolen VPN session opens a second path into OPS-WS-07.",
+      "source": "gw-vpn",
       "target": "ws-ops",
       "blockedBy": [
         { "controlId": "revoke-sessions" },
@@ -141,12 +143,12 @@
       "at": 205,
       "type": "lateral_movement",
       "title": "Lateral to domain controller",
-      "description": "Kerberoast followed by admin session to DC-01.",
-      "source": "ws-finance",
+      "description": "Kerberoast followed by admin session to DC-01 from the operations subnet.",
+      "source": "ws-ops",
       "target": "dc-01",
       "blockedBy": [
         { "controlId": "revoke-sessions" },
-        { "controlId": "isolate-host", "targetNode": "ws-finance" },
+        { "controlId": "isolate-host", "targetNode": "ws-ops" },
         { "controlId": "isolate-host", "targetNode": "dc-01" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "dc-01", "level": 2 }]

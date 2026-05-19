@@ -321,7 +321,7 @@ function NetworkGraphInner() {
           nodeTypes={nodeTypes}
           onNodeClick={onNodeClick}
           fitView
-          fitViewOptions={{ padding: 0.16 }}
+          fitViewOptions={{ padding: 0.1 }}
           minZoom={0.25}
           maxZoom={1.1}
           proOptions={{ hideAttribution: true }}

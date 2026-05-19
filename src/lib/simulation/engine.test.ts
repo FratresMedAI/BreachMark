@@ -23,9 +23,23 @@ describe("replayToTime", () => {
     expect(result.metrics.eventsContained).toBeGreaterThan(0);
   });
 
-  it("isolate finance before lateral limits DC compromise", () => {
+  it("containing the edge gateway still leaves the VPN attack active", () => {
     const controls: AppliedControl[] = [
-      { controlId: "isolate-host", appliedAt: 60, targetNode: "ws-finance" },
+      { controlId: "isolate-host", appliedAt: 10, targetNode: "gw-edge" },
+    ];
+    const result = replayToTime(scenario, controls, 600);
+    const dc = result.nodes.find((n) => n.id === "dc-01");
+    const ops = result.nodes.find((n) => n.id === "ws-ops");
+    expect(result.resolvedEvents[0]?.contained).toBe(true);
+    expect(ops?.compromise ?? 0).toBeGreaterThan(0);
+    expect(dc?.compromise ?? 0).toBeGreaterThan(0);
+    expect(result.metrics.recordsExfiltrated).toBeGreaterThan(0);
+  });
+
+  it("requires containing both gateways to keep DC clean", () => {
+    const controls: AppliedControl[] = [
+      { controlId: "isolate-host", appliedAt: 10, targetNode: "gw-edge" },
+      { controlId: "isolate-host", appliedAt: 40, targetNode: "gw-vpn" },
     ];
     const result = replayToTime(scenario, controls, 600);
     const dc = result.nodes.find((n) => n.id === "dc-01");
