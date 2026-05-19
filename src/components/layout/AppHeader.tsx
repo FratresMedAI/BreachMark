@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { Button } from "@/components/ui/button";
 import { useSimulationStore } from "@/store/simulation-store";
 import type { GamePhase } from "@/store/simulation-store";
@@ -37,6 +38,7 @@ export function AppHeader() {
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
+        <BrandLogo size="sm" />
         <div>
           <p className="font-display text-lg font-semibold tracking-tight text-foreground">
             Breach<span className="bm-text-gradient">Mark</span>

@@ -31,7 +31,18 @@ export const metadata: Metadata = {
     title: "BreachMark",
     description:
       "You get 12 response credits. The attack keeps moving. Pause the timeline and shrink the blast radius.",
-    images: ["/og.svg"],
+    images: [
+      {
+        url: "/breachmark-logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "BreachMark",
+      },
+    ],
+  },
+  icons: {
+    icon: "/breachmark-logo.png",
+    apple: "/breachmark-logo.png",
   },
 };
 

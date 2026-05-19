@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Code2, Play, Shield, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
 
@@ -110,10 +111,10 @@ export function LandingHero() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15, duration: 0.55 }}
-          className="relative"
+          className="relative flex flex-col items-center gap-6"
         >
-          <div className="absolute -inset-4 rounded-3xl bg-primary/10 blur-3xl" />
-          <GlassPanel className="relative p-5">
+          <BrandLogo size="hero" glow priority className="mx-auto" />
+          <GlassPanel className="relative w-full p-5">
             <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-3">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">

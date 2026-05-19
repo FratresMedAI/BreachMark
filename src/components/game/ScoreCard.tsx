@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Copy, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
 import { toast } from "sonner";
@@ -33,6 +34,7 @@ export function ScoreCard() {
       <GlassPanel className="overflow-hidden">
         <div className="relative px-6 pb-2 pt-8 text-center">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,oklch(0.72_0.12_195/25%),transparent_55%)]" />
+          <BrandLogo size="lg" glow className="mx-auto mb-2" />
           <p className="relative text-[10px] font-medium uppercase tracking-[0.35em] text-muted-foreground">
             Mission debrief
           </p>
