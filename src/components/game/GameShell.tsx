@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 import { LandingHero } from "@/components/game/LandingHero";
 import { useSimulationStore } from "@/store/simulation-store";
 
@@ -24,6 +25,13 @@ const phaseMotion = {
 
 export function GameShell() {
   const phase = useSimulationStore((s) => s.phase);
+  const setPhase = useSimulationStore((s) => s.setPhase);
+
+  useEffect(() => {
+    if (window.location.search.includes("phase=play")) {
+      setPhase("play");
+    }
+  }, [setPhase]);
 
   return (
     <AnimatePresence mode="wait">

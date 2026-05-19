@@ -2,7 +2,6 @@
 
 import {
   Background,
-  Controls,
   Handle,
   MarkerType,
   Position,
@@ -299,17 +298,24 @@ function NetworkGraphInner() {
           nodeTypes={nodeTypes}
           onNodeClick={onNodeClick}
           fitView
-          fitViewOptions={{ padding: 0.42 }}
-          minZoom={0.4}
-          maxZoom={1.5}
+          fitViewOptions={{ padding: 0.24 }}
+          minZoom={0.25}
+          maxZoom={1.1}
           proOptions={{ hideAttribution: true }}
           nodesDraggable={false}
           nodesConnectable={false}
-          panOnScroll
-          className="dark h-full min-h-[300px] bg-[#0a0a0a]"
+          nodesFocusable={false}
+          edgesFocusable={false}
+          elementsSelectable={false}
+          panOnDrag={false}
+          panOnScroll={false}
+          zoomOnScroll={false}
+          zoomOnPinch={false}
+          zoomOnDoubleClick={false}
+          preventScrolling={false}
+          className="dark h-full min-h-[240px] bg-[#0a0a0a]"
         >
           <Background color="#00f0ff" gap={28} size={1} />
-          <Controls showInteractive={false} position="bottom-right" />
         </ReactFlow>
       </div>
     </GlassPanel>

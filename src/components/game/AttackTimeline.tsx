@@ -13,13 +13,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useSimulationStore } from "@/store/simulation-store";
 
-const PHASE_SEGMENTS = [
-  { label: "Initial", end: 120 },
-  { label: "C2", end: 240 },
-  { label: "Lateral", end: 420 },
-  { label: "Exfil", end: 600 },
-];
-
 function ShortcutBadge({ children }: { children: string }) {
   return (
     <kbd className="rounded border border-primary/25 bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] text-primary">
@@ -37,6 +30,12 @@ export function AttackTimeline() {
   const setIsPlaying = useSimulationStore((s) => s.setIsPlaying);
   const finishScenario = useSimulationStore((s) => s.finishScenario);
   const progress = (simTime / scenario.maxTime) * 100;
+  const phaseSegments = [
+    { label: "Initial", end: scenario.maxTime * 0.2 },
+    { label: "C2", end: scenario.maxTime * 0.38 },
+    { label: "Lateral", end: scenario.maxTime * 0.7 },
+    { label: "Exfil", end: scenario.maxTime },
+  ];
 
   const skipToNext = () => {
     const next = scenario.events.find((ev) => ev.at > simTime);
@@ -47,11 +46,11 @@ export function AttackTimeline() {
   };
 
   return (
-    <GlassPanel glow variant="hud" className="space-y-4 p-4">
+    <GlassPanel glow variant="hud" className="space-y-3 p-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="bm-tactical-label">Attack timeline</p>
-          <p className="font-mono text-2xl font-semibold text-foreground">
+          <p className="font-mono text-xl font-semibold text-foreground">
             T+{Math.floor(simTime)}s{" "}
             <span className="text-base font-normal text-muted-foreground">
               / {scenario.maxTime}s
@@ -119,8 +118,8 @@ export function AttackTimeline() {
 
       <div className="relative pt-2">
         <div className="mb-1 flex justify-between px-0.5">
-          {PHASE_SEGMENTS.map((seg, i) => {
-            const start = i === 0 ? 0 : PHASE_SEGMENTS[i - 1].end;
+          {phaseSegments.map((seg, i) => {
+            const start = i === 0 ? 0 : phaseSegments[i - 1].end;
             const width = ((seg.end - start) / scenario.maxTime) * 100;
             return (
               <span
@@ -136,7 +135,7 @@ export function AttackTimeline() {
 
         <div className="relative grid h-4 overflow-hidden rounded-xl border border-primary/15 bg-muted/30">
           <div className="absolute inset-0 grid grid-cols-4">
-            {PHASE_SEGMENTS.map((seg) => (
+            {phaseSegments.map((seg) => (
               <div key={seg.label} className="border-r border-primary/10 last:border-r-0" />
             ))}
           </div>
@@ -154,7 +153,7 @@ export function AttackTimeline() {
           />
         </div>
 
-        <div className="relative mt-3 h-12">
+        <div className="relative mt-2 h-8">
           {scenario.events.map((ev) => {
             const pct = (ev.at / scenario.maxTime) * 100;
             const resolved = replay.resolvedEvents.find(
@@ -168,7 +167,7 @@ export function AttackTimeline() {
                   <button
                     type="button"
                     className={cn(
-                      "bm-focus-ring absolute top-3 h-3.5 w-3.5 -translate-x-1/2 rounded-sm border-2 transition-all duration-200 ease-out hover:scale-125",
+                      "bm-focus-ring absolute top-2 h-3.5 w-3.5 -translate-x-1/2 rounded-sm border-2 transition-all duration-200 ease-out hover:scale-125",
                       passed &&
                         contained &&
                         "border-primary bg-primary shadow-[0_0_10px_rgba(0,240,255,0.7)]",
@@ -210,7 +209,7 @@ export function AttackTimeline() {
         aria-label="Scrub attack timeline"
       />
 
-      <div className="flex flex-wrap items-center gap-2 text-[11px]">
+      <div className="flex flex-wrap items-center gap-1.5 text-[10px]">
         <span className="bm-tactical-label text-[9px]">Recent events</span>
         {replay.resolvedEvents
           .filter((r) => r.event.at <= simTime)

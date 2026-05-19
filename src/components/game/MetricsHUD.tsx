@@ -10,7 +10,7 @@ export function MetricsHUD() {
   const replay = useSimulationStore((s) => s.replay);
   const scenario = useSimulationStore((s) => s.scenario);
   const m = replay.metrics;
-  const exfilPct = Math.min(100, (m.recordsExfiltrated / 20600) * 100);
+  const exfilPct = Math.min(100, (m.recordsExfiltrated / 29800) * 100);
   const containmentPct = Math.round((m.eventsContained / scenario.events.length) * 100);
 
   const stats = [

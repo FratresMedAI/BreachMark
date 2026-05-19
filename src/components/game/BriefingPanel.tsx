@@ -52,7 +52,7 @@ export function BriefingPanel() {
             ))}
           </ol>
           <p className="rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-xs text-primary">
-            Tip: Isolate FIN-WS-04 before T+180s or reset credentials early to
+            Tip: Isolate FIN-WS-04 before T+135s or reset credentials early to
             keep DC-01 clean.
           </p>
           <Button

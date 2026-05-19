@@ -37,7 +37,7 @@ export function ControlShop() {
         </>
       }
     >
-      <ul className="grid gap-2.5 p-3">
+      <ul className="grid gap-2 p-3">
         {CONTROLS.map((control, index) => {
           const disabled = control.cost > replay.creditsRemaining;
           const selected = selectedControlId === control.id;
@@ -51,7 +51,7 @@ export function ControlShop() {
             <Button
               variant="ghost"
               className={cn(
-                "group/control relative h-auto w-full justify-start gap-3 overflow-hidden rounded-xl border border-primary/15 bg-background/35 px-3 py-2.5 text-left transition-all hover:border-primary/45 hover:bg-primary/10",
+                "group/control relative h-auto w-full justify-start gap-2.5 overflow-hidden rounded-xl border border-primary/15 bg-background/35 px-3 py-2 text-left transition-all hover:border-primary/45 hover:bg-primary/10",
                 selected &&
                   "border-primary/60 bg-primary/10 shadow-[inset_0_0_24px_-12px_rgba(0,240,255,0.65),0_0_22px_rgba(0,240,255,0.18)]",
                 disabled && "opacity-40 hover:border-destructive/50 hover:bg-destructive/10",
@@ -71,13 +71,13 @@ export function ControlShop() {
               </span>
               <span
                 className={cn(
-                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border",
+                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border",
                   selected
                     ? "border-primary/40 bg-primary/25 text-primary"
                     : "border-primary/10 bg-muted/80 text-muted-foreground",
                 )}
               >
-                {Icon ? <Icon className="h-4 w-4" /> : null}
+                  {Icon ? <Icon className="h-3.5 w-3.5" /> : null}
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center justify-between gap-2">
@@ -87,7 +87,7 @@ export function ControlShop() {
                   <Badge
                     variant="secondary"
                     className={cn(
-                      "shrink-0 border border-primary/20 bg-primary/10 font-mono text-[10px] text-primary",
+                      "shrink-0 border border-primary/20 bg-primary/10 px-1.5 py-0 font-mono text-[10px] text-primary",
                       affordable && "bm-pulse-ring",
                       disabled && "border-destructive/30 bg-destructive/15 text-destructive",
                     )}
@@ -95,7 +95,7 @@ export function ControlShop() {
                     {control.cost} cr
                   </Badge>
                 </span>
-                <span className="mt-0.5 line-clamp-2 block text-xs leading-snug text-muted-foreground">
+                <span className="mt-0.5 line-clamp-2 block text-[11px] leading-snug text-muted-foreground">
                   {control.description}
                   {control.requiresTarget && " — click a host on the graph"}
                 </span>

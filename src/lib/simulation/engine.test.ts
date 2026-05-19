@@ -50,7 +50,7 @@ describe("replayToTime", () => {
       { controlId: "block-ioc", appliedAt: 50 },
     ];
     const result = replayToTime(scenario, controls, 600);
-    expect(result.creditsSpent).toBe(3);
-    expect(result.creditsRemaining).toBe(9);
+    expect(result.creditsSpent).toBe(5);
+    expect(result.creditsRemaining).toBe(4);
   });
 });

@@ -79,7 +79,7 @@ export function LandingHero() {
               <span className="hidden text-border sm:inline">|</span>
               <span className="text-accent">DEFCON · SIM</span>
               <span className="hidden text-border sm:inline">|</span>
-              <span>CREDITS: 12</span>
+              <span>CREDITS: 9</span>
             </p>
           </motion.div>
 
@@ -87,7 +87,7 @@ export function LandingHero() {
             variants={item}
             className="max-w-xl text-lg leading-relaxed text-muted-foreground"
           >
-            Twelve response credits. A live attack timeline. A network graph that
+            Nine response credits. A live attack timeline. A network graph that
             reacts when you pause the breach and deploy controls.
           </motion.p>
 
@@ -170,7 +170,7 @@ export function LandingHero() {
                 <HeroGraphPreview />
               </div>
               <div className="grid grid-cols-2 gap-2 font-mono text-xs">
-                <PreviewStat label="Credits" value="7 / 12" accent />
+                <PreviewStat label="Credits" value="4 / 9" accent />
                 <PreviewStat label="MTTD" value="62s" />
                 <PreviewStat label="Hosts lost" value="1" warn />
                 <PreviewStat label="Exfil" value="0 rec" accent />
