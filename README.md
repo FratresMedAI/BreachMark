@@ -2,7 +2,7 @@
 
 # BreachMark
 
-### Interactive blue-team incident simulator
+### Cyber SOC command center simulator
 
 **Spend limited response credits. Scrub the attack timeline. Watch the blast radius change on a live network graph.**
 
@@ -10,28 +10,16 @@
 
 [![Live demo](https://img.shields.io/badge/Live_Demo-Play-0891b2?style=for-the-badge)](https://breachmark.vercel.app)
 [![CI](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml/badge.svg)](https://github.com/FratresMedAI/BreachMark/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 
 <br />
 
-<img src="public/demo.gif" alt="BreachMark 12-second simulator playthrough preview" width="100%" />
+<img src="public/screenshots/simulator.png" alt="BreachMark live simulator command center with graph, timeline, HUD, and response controls" width="100%" />
 
 <br />
 
-[![Vercel](https://img.shields.io/badge/Vercel-deployed-000?style=flat-square&logo=vercel&logoColor=white)](https://breachmark.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-16-000?style=flat-square&logo=next.js)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-components-000?style=flat-square)](https://ui.shadcn.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-microinteractions-c026d3?style=flat-square)](https://motion.dev/)
-[![MITRE-inspired](https://img.shields.io/badge/MITRE--inspired-attack_flow-ff3b5c?style=flat-square)](SCENARIO_DESIGN.md)
-[![React Flow](https://img.shields.io/badge/React_Flow-graph-ff0072?style=flat-square)](https://reactflow.dev/)
-[![Vitest](https://img.shields.io/badge/Vitest-tested-6E9F18?style=flat-square&logo=vitest)](https://vitest.dev/)
-
-<br />
-
-<img src="docs/banner.svg" alt="BreachMark — network graph, timeline, and response controls" width="100%" />
-
-<br />
+<sub>
+Next.js 16 · TypeScript · Tailwind CSS v4 · shadcn/ui · React Flow · Framer Motion · Vitest · Vercel
+</sub>
 
 [Live demo](https://breachmark.vercel.app) · [Scenario design](SCENARIO_DESIGN.md) · [Report issue](https://github.com/FratresMedAI/BreachMark/issues)
 
@@ -94,10 +82,6 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 <br />
 
 <img src="public/screenshots/briefing.png" alt="BreachMark live scenario briefing" width="100%" />
-
-<br />
-
-<img src="public/screenshots/simulator.png" alt="BreachMark live simulator command center with graph, timeline, HUD, and response controls" width="100%" />
 
 <br />
 
