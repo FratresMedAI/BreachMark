@@ -1,112 +1,187 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Shield, Play } from "lucide-react";
+import { ArrowRight, Code2, Play, Shield, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
+
+const features = [
+  {
+    title: "Credit tradeoffs",
+    body: "Every control has a cost. You cannot deploy the full playbook.",
+  },
+  {
+    title: "Timeline rewind",
+    body: "Scrub to T+120s and test earlier defensive decisions.",
+  },
+  {
+    title: "Live blast radius",
+    body: "Watch compromise spread across the graph in real time.",
+  },
+];
 
 export function LandingHero() {
   const setPhase = useSimulationStore((s) => s.setPhase);
 
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="flex min-h-[80vh] flex-col items-center justify-center px-6 text-center"
-    >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.1 }}
-        className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-4 py-1 text-sm text-cyan-300"
-      >
-        <Shield className="h-4 w-4" />
-        Interactive blue-team simulator
-      </motion.div>
-
-      <motion.h1
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="max-w-3xl text-5xl font-black tracking-tight text-slate-50 sm:text-6xl"
-      >
-        Breach
-        <span className="bg-gradient-to-r from-cyan-400 to-amber-400 bg-clip-text text-transparent">
-          Mark
-        </span>
-      </motion.h1>
-
-      <motion.p
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.35 }}
-        className="mt-6 max-w-xl text-lg text-slate-400"
-      >
-        You get 12 response credits. The attack keeps moving. Pause the timeline,
-        spend credits, and watch the blast radius shrink or spread.
-      </motion.p>
-
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="mt-10 flex flex-col gap-3 sm:flex-row"
-      >
-        <Button
-          size="lg"
-          className="bg-cyan-600 px-8 hover:bg-cyan-500"
-          onClick={() => setPhase("briefing")}
+    <section className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-6xl flex-col justify-center px-6 py-16">
+      <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <Play className="mr-2 h-5 w-5" />
-          Play demo
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="border-cyan-700"
-          asChild
-        >
-          <a
-            href="https://github.com/FratresMedAI/BreachMark"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View source
-          </a>
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="border-cyan-700"
-          asChild
-        >
-          <a
-            href="https://www.linkedin.com/in/kyle-bean-fratresxai/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
-        </Button>
-      </motion.div>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary">
+            <Shield className="h-4 w-4" />
+            Interactive blue-team simulator
+          </div>
 
-      <ul className="mt-16 grid max-w-2xl gap-4 text-left text-sm text-slate-400 sm:grid-cols-3">
-        <li className="rounded-lg border border-cyan-900/50 bg-slate-900/50 p-4">
-          <strong className="text-cyan-300">Tradeoffs</strong>
-          <br />
-          Every control costs credits — you cannot do everything.
-        </li>
-        <li className="rounded-lg border border-cyan-900/50 bg-slate-900/50 p-4">
-          <strong className="text-cyan-300">Timeline scrub</strong>
-          <br />
-          Rewind and ask &quot;what if I acted 30s earlier?&quot;
-        </li>
-        <li className="rounded-lg border border-cyan-900/50 bg-slate-900/50 p-4">
-          <strong className="text-cyan-300">Live blast radius</strong>
-          <br />
-          Network graph shows compromise spread in real time.
-        </li>
-      </ul>
-    </motion.section>
+          <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            Breach
+            <span className="bm-text-gradient">Mark</span>
+          </h1>
+
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+            Twelve response credits. A live attack timeline. A network graph that
+            reacts when you pause the breach and deploy controls.
+          </p>
+
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Button
+              size="lg"
+              className="bm-glow-primary h-12 rounded-xl px-8 text-base font-semibold"
+              onClick={() => setPhase("briefing")}
+            >
+              <Play className="mr-2 h-5 w-5" />
+              Start simulation
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-12 rounded-xl border-border/80 bg-card/30 backdrop-blur-sm"
+              asChild
+            >
+              <a
+                href="https://github.com/FratresMedAI/BreachMark"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Code2 className="mr-2 h-4 w-4" />
+                Source
+              </a>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-12 rounded-xl border-border/80 bg-card/30 backdrop-blur-sm"
+              asChild
+            >
+              <a
+                href="https://www.linkedin.com/in/kyle-bean-fratresxai/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <UserRound className="mr-2 h-4 w-4" />
+                LinkedIn
+              </a>
+            </Button>
+          </div>
+
+          <ul className="mt-14 grid gap-4 sm:grid-cols-3">
+            {features.map((f, i) => (
+              <motion.li
+                key={f.title}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.08 }}
+                className="bm-panel rounded-xl p-4"
+              >
+                <p className="text-sm font-semibold text-foreground">{f.title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {f.body}
+                </p>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.15, duration: 0.55 }}
+          className="relative"
+        >
+          <div className="absolute -inset-4 rounded-3xl bg-primary/10 blur-3xl" />
+          <GlassPanel className="relative p-5">
+            <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-3">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                  Live preview
+                </p>
+                <p className="font-mono text-sm text-foreground">
+                  Monday Morning Phish
+                </p>
+              </div>
+              <span className="rounded-md bg-primary/15 px-2 py-1 font-mono text-xs text-primary">
+                T+240s
+              </span>
+            </div>
+            <div className="space-y-3 font-mono text-xs">
+              <PreviewRow label="Credits" value="7 / 12" accent />
+              <PreviewRow label="MTTD" value="62s" />
+              <PreviewRow label="Hosts lost" value="1" warn />
+              <PreviewRow label="Exfil" value="0 records" accent />
+            </div>
+            <div className="mt-4 flex h-28 items-end gap-1 rounded-lg border border-border/50 bg-background/40 p-3">
+              {[35, 48, 62, 55, 72, 40, 28, 18, 12, 8].map((h, i) => (
+                <div
+                  key={i}
+                  className="flex-1 rounded-sm bg-gradient-to-t from-primary/20 to-primary/70"
+                  style={{ height: `${h}%` }}
+                />
+              ))}
+            </div>
+            <Button
+              className="mt-4 w-full rounded-xl"
+              variant="secondary"
+              onClick={() => setPhase("briefing")}
+            >
+              Enter scenario
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </GlassPanel>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function PreviewRow({
+  label,
+  value,
+  accent,
+  warn,
+}: {
+  label: string;
+  value: string;
+  accent?: boolean;
+  warn?: boolean;
+}) {
+  return (
+    <div className="flex justify-between rounded-lg bg-background/30 px-3 py-2">
+      <span className="text-muted-foreground">{label}</span>
+      <span
+        className={
+          warn
+            ? "text-[oklch(0.8_0.14_75)]"
+            : accent
+              ? "text-primary"
+              : "text-foreground"
+        }
+      >
+        {value}
+      </span>
+    </div>
   );
 }

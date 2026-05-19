@@ -2,13 +2,8 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { GlassPanel } from "@/components/ui/glass-panel";
+import { CONTROL_ICONS } from "@/lib/control-icons";
 import { CONTROLS } from "@/lib/simulation/controls";
 import { cn } from "@/lib/utils";
 import { useSimulationStore } from "@/store/simulation-store";
@@ -21,47 +16,74 @@ export function ControlShop() {
   const scenario = useSimulationStore((s) => s.scenario);
 
   return (
-    <Card className="border-cyan-500/20 bg-slate-900/80">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base text-cyan-100">Response controls</CardTitle>
-        <CardDescription>
-          {replay.creditsRemaining} / {scenario.startingCredits} credits left
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-2">
+    <GlassPanel
+      header={
+        <>
+          <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+            Response controls
+          </p>
+          <p className="mt-1 font-mono text-lg text-foreground">
+            {replay.creditsRemaining}
+            <span className="text-muted-foreground">
+              {" "}
+              / {scenario.startingCredits} credits
+            </span>
+          </p>
+        </>
+      }
+    >
+      <ul className="grid gap-2 p-3">
         {CONTROLS.map((control) => {
           const disabled = control.cost > replay.creditsRemaining;
           const selected = selectedControlId === control.id;
+          const Icon = CONTROL_ICONS[control.id];
           return (
-            <Button
-              key={control.id}
-              variant={selected ? "default" : "outline"}
-              className={cn(
-                "h-auto flex-col items-start gap-1 border-cyan-800 py-3 text-left",
-                selected && "border-cyan-400 bg-cyan-950",
-                disabled && "opacity-40",
-              )}
-              disabled={disabled}
-              onClick={() => {
-                if (control.requiresTarget) {
-                  selectControl(selected ? null : control.id);
-                } else {
-                  applyControl(control.id);
-                }
-              }}
-            >
-              <span className="flex w-full items-center justify-between">
-                <span className="font-medium">{control.name}</span>
-                <Badge variant="secondary">{control.cost} cr</Badge>
-              </span>
-              <span className="text-xs font-normal text-muted-foreground">
-                {control.description}
-                {control.requiresTarget && " — click a host on the graph"}
-              </span>
-            </Button>
+            <li key={control.id}>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "h-auto w-full justify-start gap-3 rounded-xl border border-transparent px-3 py-3 text-left hover:bg-background/50",
+                  selected &&
+                    "border-primary/40 bg-primary/10 shadow-[inset_0_0_0_1px_oklch(0.72_0.12_195/25%)]",
+                  disabled && "pointer-events-none opacity-35",
+                )}
+                disabled={disabled}
+                onClick={() => {
+                  if (control.requiresTarget) {
+                    selectControl(selected ? null : control.id);
+                  } else {
+                    applyControl(control.id);
+                  }
+                }}
+              >
+                <span
+                  className={cn(
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
+                    selected ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground",
+                  )}
+                >
+                  {Icon ? <Icon className="h-4 w-4" /> : null}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-center justify-between gap-2">
+                    <span className="font-medium text-foreground">{control.name}</span>
+                    <Badge
+                      variant="secondary"
+                      className="shrink-0 font-mono text-[10px]"
+                    >
+                      {control.cost} cr
+                    </Badge>
+                  </span>
+                  <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">
+                    {control.description}
+                    {control.requiresTarget && " — select a host on the graph"}
+                  </span>
+                </span>
+              </Button>
+            </li>
           );
         })}
-      </CardContent>
-    </Card>
+      </ul>
+    </GlassPanel>
   );
 }

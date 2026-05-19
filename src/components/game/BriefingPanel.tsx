@@ -1,15 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
+
+const phases = [
+  "Malicious attachment on finance workstation",
+  "C2 beacon and credential theft",
+  "Lateral movement toward DC-01",
+  "DCSync and object-storage exfiltration",
+];
 
 export function BriefingPanel() {
   const scenario = useSimulationStore((s) => s.scenario);
@@ -19,37 +21,50 @@ export function BriefingPanel() {
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto w-full max-w-2xl px-4"
+      className="mx-auto w-full max-w-2xl px-4 py-8"
     >
-      <Card className="border-cyan-500/20 bg-slate-900/90">
-        <CardHeader>
-          <CardDescription className="uppercase tracking-widest text-cyan-400">
-            Scenario briefing
-          </CardDescription>
-          <CardTitle className="text-2xl text-slate-50">{scenario.title}</CardTitle>
-          <CardDescription className="text-base">{scenario.subtitle}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4 text-slate-300">
-          <p>{scenario.description}</p>
-          <ol className="list-inside list-decimal space-y-1 text-sm text-slate-400">
-            <li>Malicious attachment on finance workstation</li>
-            <li>C2 beacon and credential theft</li>
-            <li>Lateral movement toward DC-01</li>
-            <li>DCSync and S3 exfiltration</li>
+      <GlassPanel
+        header={
+          <>
+            <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-primary">
+              Scenario briefing
+            </p>
+            <h2 className="font-display mt-2 text-3xl font-bold text-foreground">
+              {scenario.title}
+            </h2>
+            <p className="mt-1 text-muted-foreground">{scenario.subtitle}</p>
+          </>
+        }
+      >
+        <div className="space-y-5 p-5 text-sm leading-relaxed text-muted-foreground">
+          <p className="text-foreground/90">{scenario.description}</p>
+          <ol className="space-y-2">
+            {phases.map((phase, i) => (
+              <li
+                key={phase}
+                className="flex gap-3 rounded-lg border border-border/40 bg-background/25 px-3 py-2"
+              >
+                <span className="font-mono text-xs font-semibold text-primary">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span>{phase}</span>
+              </li>
+            ))}
           </ol>
-          <p className="text-sm text-amber-200/90">
-            Tip: Isolate FIN-WS-04 early or reset creds before T+180s to save the
-            domain controller.
+          <p className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-primary">
+            Tip: Isolate FIN-WS-04 before T+180s or reset credentials early to
+            keep DC-01 clean.
           </p>
           <Button
-            className="w-full bg-cyan-600 hover:bg-cyan-500"
+            className="bm-glow-primary h-12 w-full rounded-xl text-base font-semibold"
             size="lg"
             onClick={() => setPhase("play")}
           >
             Start incident response
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </GlassPanel>
     </motion.div>
   );
 }

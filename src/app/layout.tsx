@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Syne } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+
+const syne = Syne({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,9 +43,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      className={`${syne.variable} ${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full bg-[#0a0f1a] font-sans text-foreground">
+      <body className="min-h-full bg-background font-sans text-foreground">
         {children}
         <Toaster theme="dark" position="top-center" />
       </body>

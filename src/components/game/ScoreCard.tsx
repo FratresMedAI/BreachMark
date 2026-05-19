@@ -3,13 +3,7 @@
 import { motion } from "framer-motion";
 import { Copy, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
 import { toast } from "sonner";
 
@@ -22,8 +16,8 @@ export function ScoreCard() {
 
   const stageMsg =
     replay.containmentStage !== null
-      ? `Contained at stage ${replay.containmentStage} of ${scenario.events.length} — ${scenario.events.length - replay.containmentStage} stages prevented.`
-      : "No containment — full breach progression.";
+      ? `Contained at stage ${replay.containmentStage} of ${scenario.events.length}`
+      : "No containment — full breach progression";
 
   const hostsSaved = Math.max(
     0,
@@ -34,54 +28,58 @@ export function ScoreCard() {
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto w-full max-w-lg"
+      className="mx-auto w-full max-w-lg px-4 py-12"
     >
-      <Card className="border-cyan-500/30 bg-slate-900/90 shadow-2xl shadow-cyan-950/40">
-        <CardHeader className="text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-cyan-400">
+      <GlassPanel className="overflow-hidden">
+        <div className="relative px-6 pb-2 pt-8 text-center">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,oklch(0.72_0.12_195/25%),transparent_55%)]" />
+          <p className="relative text-[10px] font-medium uppercase tracking-[0.35em] text-muted-foreground">
             Mission debrief
           </p>
-          <CardTitle className="text-6xl font-black text-amber-400">
+          <p className="relative mt-2 font-display text-7xl font-extrabold bm-text-gradient">
             {grade}
-          </CardTitle>
-          <CardDescription className="text-base text-slate-300">
+          </p>
+          <p className="relative mt-2 text-lg font-medium text-foreground">
             {scenario.title}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-center text-sm text-cyan-200">{stageMsg}</p>
-          <ul className="space-y-2 text-sm text-slate-300">
-            <li>Hosts saved: {hostsSaved}</li>
-            <li>
-              Records exfiltrated:{" "}
-              {replay.metrics.recordsExfiltrated.toLocaleString()}
-            </li>
-            <li>
-              MTTD:{" "}
-              {replay.metrics.mttd !== null
-                ? `${replay.metrics.mttd}s`
-                : "Never detected"}
-            </li>
-            <li>Credits remaining: {replay.creditsRemaining}</li>
-          </ul>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              className="flex-1 bg-cyan-600 hover:bg-cyan-500"
-              onClick={() => {
-                void navigator.clipboard.writeText(scoreSummary);
-                toast.success("Score copied — paste on LinkedIn or your README");
-              }}
+          </p>
+          <p className="relative mt-1 text-sm text-muted-foreground">{stageMsg}</p>
+        </div>
+        <ul className="grid gap-2 px-6 pb-4 text-sm">
+          {[
+            ["Hosts saved", hostsSaved],
+            ["Records exfiltrated", replay.metrics.recordsExfiltrated.toLocaleString()],
+            [
+              "MTTD",
+              replay.metrics.mttd !== null ? `${replay.metrics.mttd}s` : "Never",
+            ],
+            ["Credits left", replay.creditsRemaining],
+          ].map(([label, value]) => (
+            <li
+              key={String(label)}
+              className="flex justify-between rounded-lg bg-background/30 px-3 py-2"
             >
-              <Copy className="mr-2 h-4 w-4" />
-              Copy result
-            </Button>
-            <Button variant="outline" className="flex-1" onClick={reset}>
-              <RotateCcw className="mr-2 h-4 w-4" />
-              Play again
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+              <span className="text-muted-foreground">{label}</span>
+              <span className="font-mono font-medium text-foreground">{value}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="flex flex-col gap-2 border-t border-border/50 p-4 sm:flex-row">
+          <Button
+            className="bm-glow-primary flex-1 rounded-xl"
+            onClick={() => {
+              void navigator.clipboard.writeText(scoreSummary);
+              toast.success("Score copied — ready for LinkedIn");
+            }}
+          >
+            <Copy className="mr-2 h-4 w-4" />
+            Copy result
+          </Button>
+          <Button variant="outline" className="flex-1 rounded-xl" onClick={reset}>
+            <RotateCcw className="mr-2 h-4 w-4" />
+            Play again
+          </Button>
+        </div>
+      </GlassPanel>
     </motion.div>
   );
 }

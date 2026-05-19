@@ -1,61 +1,63 @@
 "use client";
 
 import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { GlassPanel } from "@/components/ui/glass-panel";
+import { cn } from "@/lib/utils";
 import { useSimulationStore } from "@/store/simulation-store";
 
 export function MetricsHUD() {
   const replay = useSimulationStore((s) => s.replay);
   const scenario = useSimulationStore((s) => s.scenario);
   const m = replay.metrics;
+  const exfilPct = Math.min(100, (m.recordsExfiltrated / 20600) * 100);
 
-  const exfilPct = Math.min(
-    100,
-    (m.recordsExfiltrated / 20600) * 100,
-  );
+  const stats = [
+    { label: "MTTD", value: m.mttd !== null ? `${m.mttd}s` : "—", tone: "text-primary" },
+    { label: "Hosts compromised", value: String(m.hostsCompromised), tone: "text-[oklch(0.8_0.14_75)]" },
+    {
+      label: "Detection",
+      value: m.detectionFired ? "Active" : "None",
+      tone: m.detectionFired ? "text-emerald-400" : "text-muted-foreground",
+    },
+    {
+      label: "Contained",
+      value: `${m.eventsContained}/${scenario.events.length}`,
+      tone: "text-primary",
+    },
+  ];
 
   return (
-    <Card className="border-cyan-500/20 bg-slate-900/80">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base text-cyan-100">Blast radius</CardTitle>
-      </CardHeader>
-      <CardContent className="grid gap-3 text-sm">
-        <div className="flex justify-between">
-          <span className="text-slate-400">MTTD</span>
-          <span className="font-mono text-cyan-300">
-            {m.mttd !== null ? `${m.mttd}s` : "—"}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-400">Hosts compromised</span>
-          <span className="font-mono text-amber-300">{m.hostsCompromised}</span>
-        </div>
-        <div>
-          <div className="mb-1 flex justify-between">
-            <span className="text-slate-400">Records exfiltrated</span>
-            <span className="font-mono text-orange-300">
-              {m.recordsExfiltrated.toLocaleString()}
-            </span>
-          </div>
-          <Progress value={exfilPct} className="h-2" />
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-400">Events contained</span>
-          <span className="font-mono text-cyan-300">
-            {m.eventsContained} / {scenario.events.length}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-400">Detection</span>
-          <span
-            className={
-              m.detectionFired ? "text-emerald-400" : "text-slate-500"
-            }
+    <GlassPanel
+      header={
+        <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+          Blast radius
+        </p>
+      }
+    >
+      <div className="grid grid-cols-2 gap-2 p-3">
+        {stats.map((s) => (
+          <div
+            key={s.label}
+            className="rounded-xl border border-border/50 bg-background/30 px-3 py-2.5"
           >
-            {m.detectionFired ? "Active" : "None"}
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              {s.label}
+            </p>
+            <p className={cn("mt-1 font-mono text-lg font-semibold", s.tone)}>
+              {s.value}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="border-t border-border/50 px-3 pb-3 pt-2">
+        <div className="mb-2 flex justify-between text-xs">
+          <span className="text-muted-foreground">Records exfiltrated</span>
+          <span className="font-mono text-destructive">
+            {m.recordsExfiltrated.toLocaleString()}
           </span>
         </div>
-      </CardContent>
-    </Card>
+        <Progress value={exfilPct} className="h-2 bg-muted/50" />
+      </div>
+    </GlassPanel>
   );
 }

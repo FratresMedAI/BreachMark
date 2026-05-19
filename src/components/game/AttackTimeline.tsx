@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 import { Pause, Play, SkipForward } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import { cn } from "@/lib/utils";
 import { useSimulationStore } from "@/store/simulation-store";
 
@@ -14,17 +15,18 @@ export function AttackTimeline() {
   const setSimTime = useSimulationStore((s) => s.setSimTime);
   const setIsPlaying = useSimulationStore((s) => s.setIsPlaying);
   const finishScenario = useSimulationStore((s) => s.finishScenario);
+  const progress = (simTime / scenario.maxTime) * 100;
 
   return (
-    <div className="space-y-3 rounded-xl border border-cyan-500/20 bg-slate-900/80 p-4">
+    <GlassPanel className="space-y-4 p-4">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <p className="text-xs uppercase tracking-widest text-cyan-400/80">
+          <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
             Attack timeline
           </p>
-          <p className="font-mono text-lg text-slate-100">
+          <p className="font-mono text-2xl font-semibold text-foreground">
             T+{Math.floor(simTime)}s{" "}
-            <span className="text-sm text-slate-500">
+            <span className="text-base font-normal text-muted-foreground">
               / {scenario.maxTime}s
             </span>
           </p>
@@ -33,7 +35,7 @@ export function AttackTimeline() {
           <Button
             size="sm"
             variant="outline"
-            className="border-cyan-700"
+            className="rounded-xl border-border/70 bg-background/40"
             onClick={() => setIsPlaying(!isPlaying)}
           >
             {isPlaying ? (
@@ -45,7 +47,7 @@ export function AttackTimeline() {
           <Button
             size="sm"
             variant="outline"
-            className="border-cyan-700"
+            className="rounded-xl border-border/70 bg-background/40"
             onClick={() => finishScenario()}
           >
             <SkipForward className="h-4 w-4" />
@@ -53,6 +55,9 @@ export function AttackTimeline() {
         </div>
       </div>
 
+      <div className="relative h-1.5 overflow-hidden rounded-full bg-muted/40">
+        <div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary/80 to-primary transition-all duration-300" style={{ width: `${progress}%` }} />
+      </div>
       <Slider
         value={[simTime]}
         min={0}
@@ -79,9 +84,9 @@ export function AttackTimeline() {
               title={`${ev.title} (T+${ev.at}s)`}
               className={cn(
                 "absolute top-4 h-3 w-3 -translate-x-1/2 rounded-full border transition-colors",
-                passed && contained && "border-cyan-400 bg-cyan-500",
-                passed && !contained && "border-orange-500 bg-orange-500",
-                !passed && "border-slate-600 bg-slate-700",
+                passed && contained && "border-primary bg-primary shadow-[0_0_8px_oklch(0.72_0.12_195/60%)]",
+                passed && !contained && "border-[oklch(0.65_0.2_45)] bg-[oklch(0.65_0.2_45)]",
+                !passed && "border-border bg-muted",
               )}
               style={{ left: `${pct}%` }}
               onClick={() => {
@@ -103,14 +108,14 @@ export function AttackTimeline() {
               className={cn(
                 "rounded px-2 py-0.5",
                 r.contained
-                  ? "bg-cyan-950 text-cyan-300"
-                  : "bg-orange-950 text-orange-300",
+                  ? "bg-primary/15 text-primary"
+                  : "bg-destructive/15 text-destructive",
               )}
             >
               {r.contained ? "Contained" : "Fired"}: {r.event.title}
             </span>
           ))}
       </div>
-    </div>
+    </GlassPanel>
   );
 }

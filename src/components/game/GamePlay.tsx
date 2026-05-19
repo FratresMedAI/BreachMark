@@ -29,17 +29,17 @@ export function GamePlay() {
   }, [lastToast, clearToast]);
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col gap-4 p-4">
-      <header className="flex flex-wrap items-end justify-between gap-2">
-        <div>
-          <h2 className="text-xl font-bold text-slate-100">{scenario.title}</h2>
-          <p className="text-sm text-slate-400">{scenario.subtitle}</p>
-        </div>
-      </header>
+    <div className="mx-auto flex h-[calc(100vh-5.5rem)] max-w-[1600px] flex-col gap-4 px-4 pb-4 pt-2">
+      <div className="bm-panel rounded-2xl px-4 py-3">
+        <p className="font-display text-xl font-semibold text-foreground">
+          {scenario.title}
+        </p>
+        <p className="text-sm text-muted-foreground">{scenario.subtitle}</p>
+      </div>
 
-      <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1fr_280px]">
+      <div className="grid min-h-0 flex-1 gap-4 xl:grid-cols-[1fr_300px]">
         <div className="flex min-h-0 flex-col gap-4">
-          <div className="min-h-[280px] flex-1">
+          <div className="min-h-[300px] flex-1">
             <NetworkGraph />
           </div>
           <AttackTimeline />
