@@ -74,6 +74,20 @@ export function LandingHero() {
             View source
           </a>
         </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          className="border-cyan-700"
+          asChild
+        >
+          <a
+            href="https://www.linkedin.com/in/kyle-bean-fratresxai/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </a>
+        </Button>
       </motion.div>
 
       <ul className="mt-16 grid max-w-2xl gap-4 text-left text-sm text-slate-400 sm:grid-cols-3">

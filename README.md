@@ -169,9 +169,15 @@ Set `NEXT_PUBLIC_SITE_URL` to your deployment URL for correct Open Graph links.
 
 ## Author
 
-Built and maintained by **[FratresMedAI](https://github.com/FratresMedAI)**.
+**[Kyle Bean](https://www.linkedin.com/in/kyle-bean-fratresxai/)** — interactive security tooling and full-stack portfolio projects.
 
-If this project is useful for your portfolio or team, consider **starring the repo** — it helps visibility on GitHub.
+| | |
+|---|---|
+| LinkedIn | [linkedin.com/in/kyle-bean-fratresxai](https://www.linkedin.com/in/kyle-bean-fratresxai/) |
+| GitHub | [@FratresMedAI](https://github.com/FratresMedAI) |
+| Repo | [FratresMedAI/BreachMark](https://github.com/FratresMedAI/BreachMark) |
+
+If this project is useful on a resume or interview loop, consider **starring the repo** — it helps visibility on GitHub.
 
 ---
 

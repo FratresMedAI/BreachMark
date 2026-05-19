@@ -212,5 +212,6 @@ export function buildScoreSummary(
     `- Credits remaining: ${result.creditsRemaining}/${scenario.startingCredits}`,
     "",
     "https://github.com/FratresMedAI/BreachMark",
+    "https://www.linkedin.com/in/kyle-bean-fratresxai/",
   ].join("\n");
 }
