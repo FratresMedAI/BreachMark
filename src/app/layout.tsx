@@ -17,11 +17,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://breach-budget.vercel.app",
   ),
-  title: "Breach Budget — Interactive Defensive Simulator",
+  title: "BreachMark — Interactive Defensive Simulator",
   description:
     "Blue-team incident simulator: 12 response credits, live attack timeline, and blast-radius graph. Pause the breach and deploy controls.",
   openGraph: {
-    title: "Breach Budget",
+    title: "BreachMark",
     description:
       "You get 12 response credits. The attack keeps moving. Pause the timeline and shrink the blast radius.",
     images: ["/og.svg"],

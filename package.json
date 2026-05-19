@@ -1,7 +1,7 @@
 {
-  "name": "breach-budget",
+  "name": "breach-mark",
   "version": "0.1.0",
-  "description": "Interactive blue-team incident simulator — portfolio showcase (Breach Budget / BreachMark)",
+  "description": "BreachMark — interactive blue-team incident simulator (portfolio showcase)",
   "private": true,
   "repository": {
     "type": "git",

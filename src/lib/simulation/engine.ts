@@ -203,7 +203,7 @@ export function buildScoreSummary(
       : "No containment — full breach progression";
 
   return [
-    `## Breach Budget — ${scenario.title}`,
+    `## BreachMark — ${scenario.title}`,
     `**Grade:** ${grade}`,
     `**${stage}**`,
     `- Hosts compromised: ${result.metrics.hostsCompromised}`,

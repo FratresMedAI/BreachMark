@@ -1,6 +1,6 @@
 <div align="center">
 
-# Breach Budget
+# BreachMark
 
 ### Interactive blue-team incident simulator
 
@@ -19,7 +19,7 @@
 
 <br />
 
-<img src="docs/banner.svg" alt="Breach Budget — network graph, timeline, and response controls" width="100%" />
+<img src="docs/banner.svg" alt="BreachMark — network graph, timeline, and response controls" width="100%" />
 
 <br />
 
@@ -44,7 +44,7 @@
 
 ## Why this exists (portfolio narrative)
 
-I built **Breach Budget** to demonstrate skills that don't show up in a resume bullet list:
+I built **BreachMark** to demonstrate skills that don't show up in a resume bullet list:
 
 - **Defensive thinking** — prioritizing controls when you cannot afford them all  
 - **Systems design** — simulation engine decoupled from UI for testable, deterministic replay  
@@ -161,7 +161,7 @@ npm run dev
 
 ## Deploy your own
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/FratresMedAI/BreachMark&project-name=breach-budget&repository-name=breach-budget)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/FratresMedAI/BreachMark&project-name=breach-mark&repository-name=BreachMark)
 
 Set `NEXT_PUBLIC_SITE_URL` to your deployment URL for correct Open Graph links.
 

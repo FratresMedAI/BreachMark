@@ -30,9 +30,9 @@ export function LandingHero() {
         transition={{ delay: 0.2 }}
         className="max-w-3xl text-5xl font-black tracking-tight text-slate-50 sm:text-6xl"
       >
-        Breach{" "}
+        Breach
         <span className="bg-gradient-to-r from-cyan-400 to-amber-400 bg-clip-text text-transparent">
-          Budget
+          Mark
         </span>
       </motion.h1>
 
