@@ -13,9 +13,9 @@ describe("replayToTime", () => {
     expect(result.metrics.hostsCompromised).toBeGreaterThan(1);
   });
 
-  it("contains the first gateway attack with edge isolation", () => {
+  it("contains the edge phish with block-ioc", () => {
     const controls: AppliedControl[] = [
-      { controlId: "isolate-host", appliedAt: 10, targetNode: "gw-edge" },
+      { controlId: "block-ioc", appliedAt: 10 },
     ];
     const result = replayToTime(scenario, controls, 600);
     const first = result.resolvedEvents[0];
@@ -23,23 +23,21 @@ describe("replayToTime", () => {
     expect(result.metrics.eventsContained).toBeGreaterThan(0);
   });
 
-  it("containing the edge gateway still leaves the VPN attack active", () => {
+  it("resetting finance still leaves the VPN path active", () => {
     const controls: AppliedControl[] = [
-      { controlId: "isolate-host", appliedAt: 10, targetNode: "gw-edge" },
+      { controlId: "reset-user-creds", appliedAt: 10, targetNode: "ws-finance" },
     ];
     const result = replayToTime(scenario, controls, 600);
-    const dc = result.nodes.find((n) => n.id === "dc-01");
-    const ops = result.nodes.find((n) => n.id === "ws-ops");
+    const hr = result.nodes.find((n) => n.id === "ws-hr");
     expect(result.resolvedEvents[0]?.contained).toBe(true);
-    expect(ops?.compromise ?? 0).toBeGreaterThan(0);
-    expect(dc?.compromise ?? 0).toBeGreaterThan(0);
+    expect(hr?.compromise ?? 0).toBeGreaterThan(0);
     expect(result.metrics.recordsExfiltrated).toBeGreaterThan(0);
   });
 
-  it("requires containing both gateways to keep DC clean", () => {
+  it("handles both ingress paths with block-ioc and revoke-sessions", () => {
     const controls: AppliedControl[] = [
-      { controlId: "isolate-host", appliedAt: 10, targetNode: "gw-edge" },
-      { controlId: "isolate-host", appliedAt: 40, targetNode: "gw-vpn" },
+      { controlId: "block-ioc", appliedAt: 10 },
+      { controlId: "revoke-sessions", appliedAt: 40 },
     ];
     const result = replayToTime(scenario, controls, 600);
     const dc = result.nodes.find((n) => n.id === "dc-01");
@@ -65,6 +63,6 @@ describe("replayToTime", () => {
     ];
     const result = replayToTime(scenario, controls, 600);
     expect(result.creditsSpent).toBe(7);
-    expect(result.creditsRemaining).toBe(5);
+    expect(result.creditsRemaining).toBe(8);
   });
 });

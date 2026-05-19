@@ -36,7 +36,7 @@ Next.js 16 · TypeScript · Tailwind CSS v4 · shadcn/ui · React Flow · Framer
 | **Audience** | Recruiters, hiring managers, and blue-team learners who want a **two-minute** interactive proof of skill. |
 | **Status** | v1.3 — Series-A visual reset, neon glassmorphism UI, one polished scenario (*Monday Morning Phish*), full play loop, shareable scorecard. |
 
-> **Hook:** You get **12 response credits**. Two gateways light up at T+30 and T+45. Pause the timeline, spend credits, watch the blast radius shrink or spread.
+> **Hook:** You get **15 response credits**. Two gateways light up at T+30 and T+45. Pause the timeline, try controls, and watch the blast radius change.
 
 ---
 
@@ -56,7 +56,7 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 | Feature | Recruiter signal | Implementation |
 |---------|------------------|----------------|
-| **Credit budget** | Prioritization under pressure | Isolate (5cr), reset creds (4cr), block IOC (4cr), logging (3cr), revoke sessions (5cr) |
+| **Credit budget** | Prioritization under pressure | Reset creds (4cr), block IOC (4cr), logging (3cr), revoke sessions (5cr) |
 | **Blast-radius graph** | Systems thinking | React Flow topology with compromise levels, dual gateway ingress, active breach glow, and click-to-target controls |
 | **Attack timeline** | Incident sequencing | Segmented rail, keyboard shortcuts (`Space` / `→` / `F`), deterministic replay from T+0 |
 | **Scorecard** | Shareable outcome | Animated letter grade, confetti on **A**, LinkedIn-ready copy |
@@ -68,10 +68,10 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 1. Open the **[live demo](https://breachmark.vercel.app)** (no install).  
 2. **Launch Simulator** → **Start incident response** inside the cyber SOC command center.  
-3. Contain the edge gateway before **T+30**, then decide whether to spend on the VPN/session path before **T+45**.  
+3. Try **Block IOC** before **T+30**, then **Revoke sessions** before **T+45** if the VPN path is still moving.  
 4. Scrub the glowing timeline → **Finish** → **Copy LinkedIn Summary**.
 
-**Win condition to try:** DC stays clean and exfil stays at **0** only if you handle both ingress paths and save credits for later stages.
+**Goal to explore:** DC stays clean and exfil stays at **0** when you cover both ingress paths—scrub the timeline to see why.
 
 ---
 

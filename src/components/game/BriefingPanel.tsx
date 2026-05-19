@@ -8,7 +8,7 @@ import { useSimulationStore } from "@/store/simulation-store";
 
 const phases = [
   "T+30 edge-gateway phish lands on finance",
-  "T+45 VPN token replay opens a second path",
+  "T+45 VPN token replay lands on HR-WS-11",
   "Credential theft and lateral movement",
   "Domain controller escalation",
   "Object-storage exfiltration near the end",
@@ -53,8 +53,9 @@ export function BriefingPanel() {
             ))}
           </ol>
           <p className="rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-xs text-primary">
-            Tip: One gateway containment is not enough. The second path still
-            fires unless you spend credits on the VPN/session side too.
+            Tip: Try one control, scrub the timeline, and watch the graph. Block
+            IOC slows the edge path; revoke sessions addresses the VPN replay on
+            HR.
           </p>
           <Button
             className="bm-glow-cyan h-12 w-full rounded-xl text-base font-semibold"

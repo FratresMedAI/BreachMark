@@ -2,8 +2,8 @@
   "id": "monday-morning-phish",
   "title": "Monday Morning Phish",
   "subtitle": "Dual gateway phish → domain controller → object storage",
-  "description": "A finance analyst opens a payroll lure while a stolen VPN token lands through a second gateway. You have 12 response credits, but broad controls are expensive. Pause the timeline, contain both entry paths, and stop the later domain and exfil stages.",
-  "startingCredits": 12,
+  "description": "A finance analyst opens a payroll lure while a stolen VPN token lands on HR through a second gateway. You have 15 response credits to try different controls—scrub the timeline and see what each one changes. There is no single perfect playbook.",
+  "startingCredits": 15,
   "maxTime": 600,
   "nodes": [
     {
@@ -76,8 +76,8 @@
       "source": "gw-edge",
       "target": "ws-finance",
       "blockedBy": [
-        { "controlId": "isolate-host", "targetNode": "gw-edge" },
-        { "controlId": "isolate-host", "targetNode": "ws-finance" }
+        { "controlId": "block-ioc" },
+        { "controlId": "reset-user-creds", "targetNode": "ws-finance" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "ws-finance", "level": 1 }]
     },
@@ -90,7 +90,7 @@
       "source": "ws-finance",
       "blockedBy": [
         { "controlId": "block-ioc" },
-        { "controlId": "isolate-host", "targetNode": "ws-finance" }
+        { "controlId": "reset-user-creds", "targetNode": "ws-finance" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "ws-finance", "level": 2 }]
     },
@@ -103,7 +103,7 @@
       "source": "ws-finance",
       "blockedBy": [
         { "controlId": "reset-user-creds", "targetNode": "ws-finance" },
-        { "controlId": "isolate-host", "targetNode": "ws-finance" }
+        { "controlId": "block-ioc" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "ws-finance", "level": 3 }]
     },
@@ -117,7 +117,6 @@
       "target": "ws-hr",
       "blockedBy": [
         { "controlId": "revoke-sessions" },
-        { "controlId": "isolate-host", "targetNode": "ws-finance" },
         { "controlId": "reset-user-creds", "targetNode": "ws-finance" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "ws-hr", "level": 2 }]
@@ -126,29 +125,28 @@
       "id": "ev-5",
       "at": 45,
       "type": "initial_access",
-      "title": "VPN token replay to operations",
-      "description": "A separate stolen VPN session opens a second path into OPS-WS-07.",
+      "title": "VPN token replay to HR",
+      "description": "A separate stolen VPN session opens a second path into HR-WS-11.",
       "source": "gw-vpn",
-      "target": "ws-ops",
+      "target": "ws-hr",
       "blockedBy": [
         { "controlId": "revoke-sessions" },
-        { "controlId": "block-ioc" },
-        { "controlId": "isolate-host", "targetNode": "gw-vpn" }
+        { "controlId": "reset-user-creds", "targetNode": "ws-hr" }
       ],
-      "effects": [{ "type": "compromise", "nodeId": "ws-ops", "level": 2 }]
+      "effects": [{ "type": "compromise", "nodeId": "ws-hr", "level": 2 }]
     },
     {
       "id": "ev-6",
       "at": 285,
       "type": "lateral_movement",
       "title": "Lateral to domain controller",
-      "description": "Kerberoast followed by admin session to DC-01 from the operations subnet.",
-      "source": "ws-ops",
+      "description": "Kerberoast followed by admin session to DC-01 from the HR subnet.",
+      "source": "ws-hr",
       "target": "dc-01",
       "blockedBy": [
         { "controlId": "revoke-sessions" },
-        { "controlId": "isolate-host", "targetNode": "ws-ops" },
-        { "controlId": "isolate-host", "targetNode": "dc-01" }
+        { "controlId": "reset-user-creds", "targetNode": "ws-hr" },
+        { "controlId": "block-ioc" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "dc-01", "level": 2 }]
     },
@@ -161,8 +159,8 @@
       "source": "dc-01",
       "target": "dc-01",
       "blockedBy": [
-        { "controlId": "isolate-host", "targetNode": "dc-01" },
-        { "controlId": "revoke-sessions" }
+        { "controlId": "revoke-sessions" },
+        { "controlId": "block-ioc" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "dc-01", "level": 3 }]
     },
@@ -174,8 +172,9 @@
       "description": "Sensitive finance archives aggregated on DC-01.",
       "source": "dc-01",
       "blockedBy": [
-        { "controlId": "isolate-host", "targetNode": "dc-01" },
-        { "controlId": "enhanced-logging" }
+        { "controlId": "enhanced-logging" },
+        { "controlId": "revoke-sessions" },
+        { "controlId": "block-ioc" }
       ],
       "effects": [{ "type": "lateral_mark", "nodeId": "dc-01", "level": 3 }]
     },
@@ -188,9 +187,9 @@
       "source": "dc-01",
       "target": "ws-eng",
       "blockedBy": [
-        { "controlId": "isolate-host", "targetNode": "dc-01" },
         { "controlId": "revoke-sessions" },
-        { "controlId": "enhanced-logging" }
+        { "controlId": "enhanced-logging" },
+        { "controlId": "block-ioc" }
       ],
       "effects": [{ "type": "compromise", "nodeId": "ws-eng", "level": 2 }]
     },
@@ -204,7 +203,7 @@
       "target": "s3-backup",
       "blockedBy": [
         { "controlId": "block-ioc" },
-        { "controlId": "isolate-host", "targetNode": "dc-01" }
+        { "controlId": "revoke-sessions" }
       ],
       "effects": [
         { "type": "compromise", "nodeId": "s3-backup", "level": 2 },
@@ -219,8 +218,8 @@
       "description": "Deployment scripts staged across remaining workstations.",
       "source": "dc-01",
       "blockedBy": [
-        { "controlId": "isolate-host", "targetNode": "dc-01" },
-        { "controlId": "block-ioc" }
+        { "controlId": "block-ioc" },
+        { "controlId": "revoke-sessions" }
       ],
       "effects": [
         { "type": "compromise", "nodeId": "ws-finance", "level": 3 },
@@ -239,7 +238,7 @@
       "target": "s3-backup",
       "blockedBy": [
         { "controlId": "block-ioc" },
-        { "controlId": "isolate-host", "targetNode": "dc-01" }
+        { "controlId": "revoke-sessions" }
       ],
       "effects": [{ "type": "exfil", "nodeId": "s3-backup", "records": 11300 }]
     }

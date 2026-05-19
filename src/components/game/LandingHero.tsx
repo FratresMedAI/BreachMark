@@ -12,7 +12,7 @@ const features = [
   {
     icon: Zap,
     title: "Credit tradeoffs",
-    body: "Every control has a cost. You cannot deploy the full playbook.",
+    body: "Each control costs credits—experiment and see what changes on the graph.",
   },
   {
     icon: Shield,
@@ -79,7 +79,7 @@ export function LandingHero() {
               <span className="hidden text-border sm:inline">|</span>
               <span className="text-accent">DEFCON · SIM</span>
               <span className="hidden text-border sm:inline">|</span>
-              <span>CREDITS: 12</span>
+              <span>CREDITS: 15</span>
             </p>
           </motion.div>
 
@@ -87,8 +87,8 @@ export function LandingHero() {
             variants={item}
             className="max-w-xl text-lg leading-relaxed text-muted-foreground"
           >
-            Twelve response credits. Two gateway attacks. A 600-second timeline
-            that keeps moving after the first containment.
+            Fifteen response credits. Two gateway attacks. Scrub the timeline and
+            learn which controls matter at each stage.
           </motion.p>
 
           <motion.div variants={item} className="mt-10 flex flex-wrap gap-3">

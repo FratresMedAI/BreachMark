@@ -15,7 +15,6 @@ function cloneNodes(scenario: Scenario): SimNodeState[] {
   return scenario.nodes.map((n) => ({
     ...n,
     compromise: 0 as CompromiseLevel,
-    isolated: false,
     enhancedLogging: false,
   }));
 }
@@ -58,20 +57,6 @@ function isEventContained(
     }
   }
 
-  if (event.source) {
-    const source = nodes.find((n) => n.id === event.source);
-    if (source?.isolated) {
-      return { contained: true, controlId: "isolate-host" };
-    }
-  }
-
-  if (event.target) {
-    const target = nodes.find((n) => n.id === event.target);
-    if (target?.isolated) {
-      return { contained: true, controlId: "isolate-host" };
-    }
-  }
-
   return { contained: false };
 }
 
@@ -103,10 +88,6 @@ function applyControlSideEffects(
   for (const control of controls) {
     if (control.appliedAt > upToTime) continue;
 
-    if (control.controlId === "isolate-host" && control.targetNode) {
-      const node = nodes.find((n) => n.id === control.targetNode);
-      if (node) node.isolated = true;
-    }
     if (control.controlId === "enhanced-logging") {
       metrics.detectionFired = true;
       if (metrics.mttd === null) metrics.mttd = control.appliedAt;

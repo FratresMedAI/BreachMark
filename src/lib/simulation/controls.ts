@@ -10,14 +10,6 @@ export interface ControlDefinition {
 
 export const CONTROLS: ControlDefinition[] = [
   {
-    id: "isolate-host",
-    name: "Isolate host",
-    description: "Cut network access for a compromised endpoint.",
-    cost: 5,
-    requiresTarget: true,
-    targetRoles: ["workstation", "dc", "gateway"],
-  },
-  {
     id: "reset-user-creds",
     name: "Force password reset",
     description: "Invalidate cached credentials on a workstation.",

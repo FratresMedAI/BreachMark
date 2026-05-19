@@ -65,7 +65,6 @@ export interface SimNodeState {
   role: NodeRole;
   position: { x: number; y: number };
   compromise: CompromiseLevel;
-  isolated: boolean;
   enhancedLogging: boolean;
 }
 

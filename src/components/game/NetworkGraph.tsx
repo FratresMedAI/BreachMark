@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   Background,
@@ -101,8 +101,6 @@ const HostNode = memo(function HostNode({ data, selected }: NodeProps) {
               "shadow-[inset_0_0_24px_rgba(0,240,255,0.04)]",
               highlight &&
                 "ring-2 ring-primary ring-offset-2 ring-offset-background",
-              node.isolated &&
-                "ring-2 ring-[#22ff88] ring-offset-2 ring-offset-background",
             )}
           >
             <Handle
@@ -120,11 +118,6 @@ const HostNode = memo(function HostNode({ data, selected }: NodeProps) {
                 <Icon className="h-3 w-3" />
                 {node.role}
               </span>
-              {node.isolated && (
-                <span className="text-[9px] font-semibold uppercase tracking-widest text-[#22ff88]">
-                  Isolated
-                </span>
-              )}
             </div>
             <p className="font-mono text-sm font-semibold tracking-tight text-foreground">
               {node.label}
@@ -143,7 +136,7 @@ const HostNode = memo(function HostNode({ data, selected }: NodeProps) {
       </TooltipTrigger>
       <TooltipContent side="top" className="space-y-1">
         <p className="font-semibold text-foreground">Blast radius preview</p>
-        <p className="font-mono text-primary">{node.label} · level {level}</p>
+        <p className="font-mono text-primary">{node.label} - level {level}</p>
         <p className="text-muted-foreground">
           {creditCost ? `${creditCost} credits to deploy selected control here.` : "Select a response control to preview credit cost."}
         </p>
