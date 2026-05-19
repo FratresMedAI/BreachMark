@@ -52,7 +52,7 @@ export function GamePlay() {
   }, [lastToast, clearToast]);
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-5.5rem)] w-full max-w-[1600px] flex-col gap-4 px-3 pb-4 pt-2 sm:px-4 xl:h-[calc(100vh-5.5rem)]">
+    <div className="mx-auto flex w-full max-w-[1680px] flex-col gap-5 px-3 pb-8 pt-3 sm:px-5">
       <motion.div
         layout
         className="bm-panel relative overflow-hidden rounded-xl px-4 py-3"
@@ -78,15 +78,15 @@ export function GamePlay() {
         </div>
       </motion.div>
 
-      <div className="grid min-h-0 flex-1 gap-4 xl:grid-cols-[1fr_320px]">
-        <div className="flex min-h-0 flex-col gap-4">
-          <div className="min-h-[280px] flex-1 sm:min-h-[300px]">
+      <div className="grid items-start gap-5 2xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="flex min-w-0 flex-col gap-5">
+          <div className="h-[440px] min-h-[440px] sm:h-[500px] lg:h-[560px] 2xl:h-[600px]">
             <NetworkGraph />
           </div>
           <AttackTimeline />
         </div>
 
-        <aside className="hidden flex-col gap-4 overflow-y-auto xl:flex">
+        <aside className="hidden max-h-[calc(100vh-7rem)] flex-col gap-4 overflow-y-auto pr-1 2xl:sticky 2xl:top-24 2xl:flex">
           <SidePanel />
         </aside>
       </div>
@@ -94,7 +94,7 @@ export function GamePlay() {
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger asChild>
           <Button
-            className="bm-glow-cyan fixed bottom-20 right-4 z-30 xl:hidden"
+            className="bm-glow-cyan fixed bottom-20 right-4 z-30 2xl:hidden"
             size="lg"
             aria-label="Open response controls"
           >

@@ -89,21 +89,21 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 
 ## Screenshots
 
-<img src="public/screenshots/landing.svg" alt="BreachMark landing hero with neon Launch Simulator CTA" width="100%" />
+<img src="public/screenshots/landing.png" alt="BreachMark live landing hero with neon Launch Simulator CTA" width="100%" />
 
 <br />
 
-<img src="public/screenshots/simulator.svg" alt="BreachMark simulator command center with graph, timeline, HUD, and response controls" width="100%" />
+<img src="public/screenshots/briefing.png" alt="BreachMark live scenario briefing" width="100%" />
 
 <br />
 
-<img src="public/screenshots/timeline-controls.svg" alt="BreachMark attack timeline and response control shop" width="100%" />
+<img src="public/screenshots/simulator.png" alt="BreachMark live simulator command center with graph, timeline, HUD, and response controls" width="100%" />
 
 <br />
 
-<img src="public/screenshots/scorecard.svg" alt="BreachMark scorecard with animated grade and LinkedIn summary CTA" width="100%" />
+<img src="public/screenshots/scorecard.png" alt="BreachMark live scorecard with animated grade and LinkedIn summary CTA" width="100%" />
 
-<p align="center"><sub>Static README visuals mirror the in-app v1.3 layout and are kept in <code>public/screenshots/</code>. For the real interaction model, use the <a href="https://breachmark.vercel.app">live demo</a>.</sub></p>
+<p align="center"><sub>README screenshots are captured from the running BreachMark UI and kept in <code>public/screenshots/</code>. For the real interaction model, use the <a href="https://breachmark.vercel.app">live demo</a>.</sub></p>
 
 ---
 

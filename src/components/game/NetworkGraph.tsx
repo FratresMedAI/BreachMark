@@ -251,7 +251,7 @@ function NetworkGraphInner() {
   return (
     <GlassPanel
       glow
-      className="relative flex h-full min-h-[340px] flex-col"
+      className="relative flex h-full min-h-0 flex-col"
       header={
         <div className="flex items-center justify-between">
           <div>
@@ -279,7 +279,7 @@ function NetworkGraphInner() {
         </div>
       }
     >
-      <div className="relative h-full min-h-[300px] w-full overflow-hidden rounded-b-xl">
+      <div className="relative h-full min-h-0 w-full overflow-hidden rounded-b-xl">
         <div className="bm-grid pointer-events-none absolute inset-0 z-0 opacity-70" />
         <div className="bm-scanlines pointer-events-none absolute inset-0 z-10 opacity-60" />
         {initializing && (
@@ -299,7 +299,7 @@ function NetworkGraphInner() {
           nodeTypes={nodeTypes}
           onNodeClick={onNodeClick}
           fitView
-          fitViewOptions={{ padding: 0.35 }}
+          fitViewOptions={{ padding: 0.42 }}
           minZoom={0.4}
           maxZoom={1.5}
           proOptions={{ hideAttribution: true }}
