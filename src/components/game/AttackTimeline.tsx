@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useSimulationStore } from "@/store/simulation-store";
+import { EduTooltip, LearnBadge } from "@/components/education/EduTooltip";
+import { eventEducation } from "@/lib/education";
 
 function ShortcutBadge({ children }: { children: string }) {
   return (
@@ -29,6 +31,8 @@ export function AttackTimeline() {
   const setSimTime = useSimulationStore((s) => s.setSimTime);
   const setIsPlaying = useSimulationStore((s) => s.setIsPlaying);
   const finishScenario = useSimulationStore((s) => s.finishScenario);
+  const educationMode = useSimulationStore((s) => s.educationMode);
+  const showExplanation = useSimulationStore((s) => s.showExplanation);
   const progress = (simTime / scenario.maxTime) * 100;
   const phaseSegments = [
     { label: "Initial", end: scenario.maxTime * 0.2 },
@@ -161,6 +165,7 @@ export function AttackTimeline() {
             );
             const contained = resolved?.contained;
             const passed = ev.at <= simTime;
+            const education = eventEducation[ev.id];
             return (
               <Tooltip key={ev.id}>
                 <TooltipTrigger asChild>
@@ -180,6 +185,9 @@ export function AttackTimeline() {
                     onClick={() => {
                       setIsPlaying(false);
                       setSimTime(ev.at);
+                      if (educationMode === "learning" && education) {
+                        showExplanation(education);
+                      }
                     }}
                     aria-label={`Scrub to ${ev.title} at T plus ${ev.at} seconds`}
                   />
@@ -190,11 +198,37 @@ export function AttackTimeline() {
                   {ev.target && (
                     <p className="text-muted-foreground">Target: {ev.target}</p>
                   )}
+                  {education ? (
+                    <p className="mt-1 text-[#f0abfc]">What happened? {education.mapping}</p>
+                  ) : null}
                 </TooltipContent>
               </Tooltip>
             );
           })}
         </div>
+      </div>
+
+      <div className="flex flex-wrap gap-1.5">
+        {scenario.events.slice(0, 4).map((ev) => {
+          const education = eventEducation[ev.id];
+          if (!education) return null;
+          return (
+            <EduTooltip key={ev.id} entry={education} side="top">
+              <button
+                type="button"
+                className="rounded-full border border-[#c026d3]/25 bg-[#c026d3]/10 px-2 py-1 text-[10px] text-[#f0abfc]"
+                onClick={() => {
+                  setIsPlaying(false);
+                  setSimTime(ev.at);
+                  showExplanation(education);
+                }}
+              >
+                What happened? T+{ev.at}s
+              </button>
+            </EduTooltip>
+          );
+        })}
+        <LearnBadge />
       </div>
 
       <Slider

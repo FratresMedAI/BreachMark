@@ -9,6 +9,7 @@ import {
 } from "@/lib/simulation/engine";
 import type { AppliedControl, ReplayResult, Scenario } from "@/lib/simulation/types";
 import { DEFAULT_SCENARIO } from "@/lib/scenarios";
+import type { EducationEntry, EducationMode } from "@/lib/education";
 
 export type GamePhase = "landing" | "briefing" | "play" | "score";
 
@@ -25,8 +26,13 @@ interface SimulationStore {
   grade: string;
   scoreSummary: string;
   lastToast: string | null;
+  educationMode: EducationMode;
+  activeExplanation: EducationEntry | null;
+  firstActionLessonShown: boolean;
 
   setPhase: (phase: GamePhase) => void;
+  setEducationMode: (mode: EducationMode) => void;
+  showExplanation: (entry: EducationEntry | null) => void;
   setSimTime: (time: number) => void;
   setIsPlaying: (playing: boolean) => void;
   selectControl: (controlId: string | null) => void;
@@ -59,8 +65,13 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
   grade: "—",
   scoreSummary: "",
   lastToast: null,
+  educationMode: "learning",
+  activeExplanation: null,
+  firstActionLessonShown: false,
 
   setPhase: (phase) => set({ phase }),
+  setEducationMode: (educationMode) => set({ educationMode }),
+  showExplanation: (activeExplanation) => set({ activeExplanation }),
 
   setSimTime: (time) => {
     const { scenario, appliedControls } = get();
@@ -100,9 +111,18 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     set({
       appliedControls,
       replay,
+      isPlaying:
+        state.educationMode === "learning" && !state.firstActionLessonShown
+          ? false
+          : state.isPlaying,
       selectedControlId: null,
       targetNodeId: null,
-      lastToast: `${def.name} deployed at T+${appliedAt}s`,
+      firstActionLessonShown:
+        state.firstActionLessonShown || state.educationMode === "learning",
+      lastToast:
+        state.educationMode === "learning" && !state.firstActionLessonShown
+          ? `${def.name} deployed. Learning Mode paused the timeline so you can inspect the impact.`
+          : `${def.name} deployed at T+${appliedAt}s`,
     });
   },
 
@@ -163,6 +183,8 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
       grade: "—",
       scoreSummary: "",
       lastToast: null,
+      activeExplanation: null,
+      firstActionLessonShown: false,
     });
   },
 

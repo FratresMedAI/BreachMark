@@ -12,7 +12,9 @@ import { CONTROL_ICONS } from "@/lib/control-icons";
 import { CONTROLS } from "@/lib/simulation/controls";
 import { cn } from "@/lib/utils";
 import { useSimulationStore } from "@/store/simulation-store";
-import { X } from "lucide-react";
+import { HelpCircle, X } from "lucide-react";
+import { EduTooltip } from "@/components/education/EduTooltip";
+import { controlEducation } from "@/lib/education";
 
 export function ControlShop() {
   const selectedControlId = useSimulationStore((s) => s.selectedControlId);
@@ -43,6 +45,7 @@ export function ControlShop() {
           const selected = selectedControlId === control.id;
           const affordable = !disabled;
           const Icon = CONTROL_ICONS[control.id];
+          const education = controlEducation[control.id];
           const disabledReason = disabled
             ? "Insufficient credits"
             : null;
@@ -81,8 +84,18 @@ export function ControlShop() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center justify-between gap-2">
-                  <span className="font-medium text-foreground">
+                  <span className="flex items-center gap-1.5 font-medium text-foreground">
                     {control.name}
+                    {education ? (
+                      <EduTooltip entry={education} side="left">
+                        <span
+                          className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-[#c026d3]/35 bg-[#c026d3]/15 text-[#f0abfc]"
+                          aria-label={`Learn about ${control.name}`}
+                        >
+                          <HelpCircle className="h-3 w-3" />
+                        </span>
+                      </EduTooltip>
+                    ) : null}
                   </span>
                   <Badge
                     variant="secondary"

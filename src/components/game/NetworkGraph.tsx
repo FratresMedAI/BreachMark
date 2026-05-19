@@ -32,6 +32,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { EduTooltip, LearnBadge } from "@/components/education/EduTooltip";
+import { nodeEducation } from "@/lib/education";
 
 const roleIcons: Record<NodeRole, LucideIcon> = {
   workstation: Laptop,
@@ -78,6 +80,7 @@ const HostNode = memo(function HostNode({ data, selected }: NodeProps) {
   const Icon = roleIcons[node.role];
   const blastRadius = level === 0 ? "Contained surface" : `${level + 1} linked host risk`;
   const creditCost = data.creditCost as number | undefined;
+  const education = nodeEducation[node.id];
 
   return (
     <Tooltip>
@@ -109,14 +112,23 @@ const HostNode = memo(function HostNode({ data, selected }: NodeProps) {
               className="!h-2.5 !w-2.5 !border-0 !bg-primary !shadow-[0_0_8px_#00f0ff]"
             />
             <div className="mb-2 flex items-center justify-between gap-2">
-              <span
-                className={cn(
-                  "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
-                  style.badge,
-                )}
-              >
-                <Icon className="h-3 w-3" />
-                {node.role}
+              <span className="flex items-center gap-1.5">
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
+                    style.badge,
+                  )}
+                >
+                  <Icon className="h-3 w-3" />
+                  {node.role}
+                </span>
+                {education ? (
+                  <EduTooltip entry={education} side="right">
+                    <span>
+                      <LearnBadge className="px-1.5 text-[8px]" />
+                    </span>
+                  </EduTooltip>
+                ) : null}
               </span>
             </div>
             <p className="font-mono text-sm font-semibold tracking-tight text-foreground">
@@ -140,6 +152,9 @@ const HostNode = memo(function HostNode({ data, selected }: NodeProps) {
         <p className="text-muted-foreground">
           {creditCost ? `${creditCost} credits to deploy selected control here.` : "Select a response control to preview credit cost."}
         </p>
+        <p className="text-[#f0abfc]">
+          Learn: controls here affect lateral movement risk (MITRE TA0008).
+        </p>
       </TooltipContent>
     </Tooltip>
   );
@@ -153,6 +168,8 @@ function NetworkGraphInner() {
   const selectedControlId = useSimulationStore((s) => s.selectedControlId);
   const targetNodeId = useSimulationStore((s) => s.targetNodeId);
   const applyControl = useSimulationStore((s) => s.applyControl);
+  const educationMode = useSimulationStore((s) => s.educationMode);
+  const showExplanation = useSimulationStore((s) => s.showExplanation);
   const simTime = useSimulationStore((s) => s.simTime);
   const [initializing, setInitializing] = useState(true);
 
@@ -234,13 +251,17 @@ function NetworkGraphInner() {
   const onNodeClick = useCallback(
     (_: React.MouseEvent, node: Node) => {
       if (!selectedControlId) return;
+      if (educationMode === "learning") {
+        const entry = nodeEducation[node.id];
+        if (entry) showExplanation(entry);
+      }
       const def = CONTROL_MAP[selectedControlId];
       if (!def?.requiresTarget) return;
       const simNode = replay.nodes.find((n) => n.id === node.id);
       if (!simNode || !def.targetRoles?.includes(simNode.role)) return;
       applyControl(selectedControlId, node.id);
     },
-    [selectedControlId, replay.nodes, applyControl],
+    [selectedControlId, replay.nodes, applyControl, educationMode, showExplanation],
   );
 
   return (

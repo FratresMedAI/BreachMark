@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { AttackTimeline } from "@/components/game/AttackTimeline";
 import { ControlShop } from "@/components/game/ControlShop";
 import { NetworkGraph } from "@/components/game/NetworkGraph";
+import { ConceptPopover } from "@/components/education/ConceptPopover";
+import { GlossaryModal } from "@/components/education/GlossaryModal";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -30,6 +32,10 @@ export function GamePlay() {
   const tick = useSimulationStore((s) => s.tick);
   const lastToast = useSimulationStore((s) => s.lastToast);
   const clearToast = useSimulationStore((s) => s.clearToast);
+  const educationMode = useSimulationStore((s) => s.educationMode);
+  const setEducationMode = useSimulationStore((s) => s.setEducationMode);
+  const activeExplanation = useSimulationStore((s) => s.activeExplanation);
+  const showExplanation = useSimulationStore((s) => s.showExplanation);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   useKeyboardControls();
@@ -49,6 +55,19 @@ export function GamePlay() {
 
   return (
     <div className="mx-auto flex w-full max-w-[1540px] flex-col gap-3 px-3 pb-5 pt-3 sm:px-4 lg:h-[calc(100vh-5.25rem)] lg:min-h-[640px] lg:overflow-hidden">
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-xl border-[#c026d3]/35 bg-[#c026d3]/10 text-[#f0abfc]"
+          onClick={() =>
+            setEducationMode(educationMode === "learning" ? "challenge" : "learning")
+          }
+          aria-label="Toggle learning mode"
+        >
+          {educationMode === "learning" ? "Learning Mode" : "Challenge Mode"}
+        </Button>
+      </div>
       <div className="grid min-h-0 flex-1 items-start gap-3 lg:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex min-h-0 min-w-0 flex-col gap-3">
           <div className="h-[360px] min-h-[360px] sm:h-[390px] lg:h-[min(42vh,380px)] xl:h-[min(46vh,400px)] 2xl:h-[min(48vh,430px)]">
@@ -84,6 +103,11 @@ export function GamePlay() {
           </div>
         </SheetContent>
       </Sheet>
+      <GlossaryModal />
+      <ConceptPopover
+        entry={activeExplanation}
+        onClose={() => showExplanation(null)}
+      />
     </div>
   );
 }

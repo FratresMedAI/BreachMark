@@ -10,6 +10,9 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { AfterActionReview } from "@/components/education/AfterActionReview";
+import { LearnBadge } from "@/components/education/EduTooltip";
+import { learningInsight } from "@/lib/education";
 
 export function ScoreCard() {
   const scenario = useSimulationStore((s) => s.scenario);
@@ -33,6 +36,7 @@ export function ScoreCard() {
   const exfilPrevented = Math.max(0, 20600 - replay.metrics.recordsExfiltrated);
 
   const isGradeA = grade === "A";
+  const insight = learningInsight(containmentPct);
 
   useEffect(() => {
     if (!isGradeA) return;
@@ -89,6 +93,10 @@ export function ScoreCard() {
           <p className="relative mt-1 text-sm text-muted-foreground">
             {stageMsg}
           </p>
+          <p className="relative mx-auto mt-3 max-w-xl rounded-xl border border-[#c026d3]/25 bg-[#c026d3]/10 px-3 py-2 text-sm text-foreground/90">
+            <LearnBadge className="mr-2" />
+            {insight}
+          </p>
         </div>
         <ul className="grid gap-2 px-6 pb-4 text-sm sm:grid-cols-2">
           {stats.map(([label, value], i) => (
@@ -106,11 +114,19 @@ export function ScoreCard() {
             </motion.li>
           ))}
         </ul>
+        <div className="px-6 pb-4">
+          <div className="rounded-xl border border-[#c026d3]/20 bg-[#c026d3]/10 px-3 py-2 text-xs text-muted-foreground">
+            You contained {containmentPct}% of the attack path. This maps to
+            NIST Detect + Respond: identify signal, contain spread, then protect
+            data from exfiltration.
+          </div>
+        </div>
+        <AfterActionReview scenario={scenario} replay={replay} />
         <div className="flex flex-col gap-2 border-t border-primary/10 p-4 sm:flex-row">
           <Button
             className="bm-glow-cyan flex-1 rounded-xl"
             onClick={() => {
-              const richSummary = `🚨 BreachMark SOC run complete: ${grade} grade. ${containmentPct}% containment, ${hostsSaved} hosts saved, ${exfilPrevented.toLocaleString()} records protected. #CyberSecurity #BlueTeam #IncidentResponse #BreachMark`;
+              const richSummary = `BreachMark SOC run complete: ${grade} grade. ${containmentPct}% containment, ${hostsSaved} hosts saved, ${exfilPrevented.toLocaleString()} records protected. Learning highlight: ${insight} #CyberSecurity #BlueTeam #IncidentResponse #BreachMark`;
               void navigator.clipboard.writeText(`${richSummary}\n\n${scoreSummary}`);
               toast.success("LinkedIn summary copied");
             }}

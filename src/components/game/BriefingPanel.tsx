@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { useSimulationStore } from "@/store/simulation-store";
+import { LearnBadge } from "@/components/education/EduTooltip";
 
 const phases = [
   "T+30 edge-gateway phish lands on finance",
@@ -39,6 +40,18 @@ export function BriefingPanel() {
       >
         <div className="space-y-5 p-5 text-sm leading-relaxed text-muted-foreground">
           <p className="text-foreground/90">{scenario.description}</p>
+          <div className="rounded-xl border border-[#c026d3]/25 bg-[#c026d3]/10 px-3 py-3">
+            <div className="mb-2 flex items-center gap-2">
+              <LearnBadge />
+              <p className="font-semibold text-foreground">Learning Objectives</p>
+            </div>
+            <ul className="grid gap-1 text-xs text-muted-foreground sm:grid-cols-2">
+              <li>Understand blast radius and lateral movement.</li>
+              <li>Map actions to MITRE ATT&CK and NIST Respond.</li>
+              <li>Practice credit prioritization under pressure.</li>
+              <li>See how identity controls stop token replay.</li>
+            </ul>
+          </div>
           <ol className="space-y-2">
             {phases.map((phase, i) => (
               <li

@@ -2,9 +2,9 @@
 
 # BreachMark
 
-### Cyber SOC command center simulator
+### Interactive Cybersecurity Teaching Simulator
 
-**Spend limited response credits. Contain two attack paths. Watch the blast radius change on a live network graph.**
+**Simulate real breaches. Learn real defense. Get better.**
 
 <br />
 
@@ -32,7 +32,7 @@ Next.js 16 · TypeScript · Tailwind CSS v4 · shadcn/ui · React Flow · Framer
 | | |
 |---|---|
 | **Problem** | Security training is often static—checklists and slides don't show *tradeoffs under pressure*. |
-| **Solution** | A premium cyber SOC command center where every defensive control costs credits and one containment does not end the incident. |
+| **Solution** | A premium cyber SOC teaching simulator where every control includes MITRE/NIST learning context. |
 | **Audience** | Recruiters, hiring managers, and blue-team learners who want a **two-minute** interactive proof of skill. |
 | **Status** | v1.3 — Series-A visual reset, neon glassmorphism UI, one polished scenario (*Monday Morning Phish*), full play loop, shareable scorecard. |
 
@@ -61,6 +61,16 @@ This repo is meant to be **pinned on GitHub** and linked from a resume or Linked
 | **Attack timeline** | Incident sequencing | Segmented rail, keyboard shortcuts (`Space` / `→` / `F`), deterministic replay from T+0 |
 | **Scorecard** | Shareable outcome | Animated letter grade, confetti on **A**, LinkedIn-ready copy |
 | **Safe demo data** | Responsible security tooling | Fictional scenario data only; no scanning, no real telemetry |
+
+---
+
+## What You'll Learn
+
+- How phishing, token replay, lateral movement, collection, and exfiltration map to MITRE ATT&CK.
+- How NIST Detect and Respond functions show up in practical SOC decisions.
+- Why blast radius matters more than simply counting compromised hosts.
+- How containment choices trade speed, disruption, and data protection.
+- How after-action reviews turn a simulation run into repeatable security lessons.
 
 ---
 
